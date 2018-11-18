@@ -24,6 +24,10 @@ Then cd to test-gsod and run:
 tar -xvzf gsod_2018.tar
 rm gsod_2018.tar
 
+You also want to 
+mkdir /tmp/spark-dir/
+We can change the directory if that's an issue for windows.
+
 You'll also need:
 Maven (any version, but I'm on 3.5.3)
 Java (I'm on 1.8.0_172)

@@ -9,19 +9,23 @@ import org.apache.spark.sql.SparkSession
 object BasicRDDRunner {
 
   def main(args: Array[String]): Unit = {
-    implicit val sparkSession: SparkSession = SparkSession.builder().config(new SparkConf()).getOrCreate()
+    val sparkConf = new SparkConf().set("spark.eventLog.enabled", "true")
+    implicit val sparkSession: SparkSession = SparkSession.builder().config(sparkConf).getOrCreate()
 
     try {
       //Work on this part
+      val analytic = new BasicRDDRunner
+      val data = readData(args(0))
+      println(analytic.run(data).count())
     } finally {
       sparkSession.stop()
     }
   }
 
   //Keep improving
-  def readData()(sparkSession: SparkSession)= {
-    val file = new File("../data/test-gsod")
-    val rdd = sparkSession.sparkContext.textFile(file.getAbsolutePath)
+  def readData(dataLoc: String)(implicit sparkSession: SparkSession)= {
+    val file = new File(dataLoc)
+    sparkSession.sparkContext.textFile(file.getAbsolutePath)
   }
 }
 
