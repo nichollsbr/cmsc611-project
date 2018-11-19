@@ -32,3 +32,28 @@ You'll also need:
 Maven (any version, but I'm on 3.5.3)
 Java (I'm on 1.8.0_172)
 Scala (I'm on 2.11.12)
+
+# Running
+To run the job locally on your machine, take a look at the relevant run.sh file in the analytic folder.
+For instance, basic-rdd/run.sh
+
+You'll see that it will set up each spark app name so that it matches the output file for the metrics.
+
+The following pages are helpful to understand the metrics configuration:
+https://github.com/LucaCanali/sparkMeasure/blob/master/docs/Flight_recorder_mode.md
+
+Note the problem with the flight recorder mode is that it doesn't seem to stop the sparksession.
+We should explore putting the metrics in the runner, or modifying the code for the sparkMeasure job.
+
+https://github.com/LucaCanali/sparkMeasure/blob/master/examples/SparkTaskMetricsAnalysisExample.ipynb
+
+The authors pages:
+
+https://externaltable.blogspot.com/2017/03/on-measuring-apache-spark-workload.html
+
+https://db-blog.web.cern.ch/blog/luca-canali/2017-03-measuring-apache-spark-workload-metrics-performance-troubleshooting
+
+# To Start History Server
+https://jaceklaskowski.gitbooks.io/mastering-apache-spark/spark-history-server.html
+go to $SPARK_HOME/sbin/start-history-server.sh
+
