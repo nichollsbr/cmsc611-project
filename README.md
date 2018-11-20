@@ -53,7 +53,17 @@ https://externaltable.blogspot.com/2017/03/on-measuring-apache-spark-workload.ht
 
 https://db-blog.web.cern.ch/blog/luca-canali/2017-03-measuring-apache-spark-workload-metrics-performance-troubleshooting
 
+# Spark UI for Active Job
+http://localhost:4040
+
+If it's not there, that's because the port is already taken, probably by a job improperly closed.  See spark UI output.
+
+
 # To Start History Server
 https://jaceklaskowski.gitbooks.io/mastering-apache-spark/spark-history-server.html
 go to $SPARK_HOME/sbin/start-history-server.sh
 
+http://localhost:18080
+
+# Useful Stuff
+https://jaceklaskowski.gitbooks.io/mastering-apache-spark/spark-history-server.html
