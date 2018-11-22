@@ -29,11 +29,18 @@ mkdir /tmp/spark-dir/
 We can change the directory if that's an issue for windows.
 
 You'll also need:
+Git (I recommend using a UI.  Though I've never used it on Windows, might I recommend Fork: https://git-fork.com/) 
 Maven (any version, but I'm on 3.5.3)
 Java (I'm on 1.8.0_172)
 Scala (I'm on 2.11.12)
 
 # Running
+To build the relevant jar, run
+```
+mvn clean install
+```
+in the parent directory (cmsc611-project).  If maven becomes too much of a pain, we can just commit the jar to the git repo.
+
 To run the job locally on your machine, take a look at the relevant run.sh file in the analytic folder.
 For instance, basic-rdd/run.sh
 
