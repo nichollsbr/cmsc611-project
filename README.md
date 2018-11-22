@@ -29,10 +29,11 @@ mkdir /tmp/spark-dir/
 We can change the directory if that's an issue for windows.
 
 You'll also need:
-Git (I recommend using a UI.  Though I've never used it on Windows, might I recommend Fork: https://git-fork.com/) 
-Maven (any version, but I'm on 3.5.3)
-Java (I'm on 1.8.0_172)
-Scala (I'm on 2.11.12)
+* Git (I recommend using a UI.  Though I've never used it on Windows, might I recommend Fork: https://git-fork.com/) 
+* Maven (any version, but I'm on 3.5.3)
+* Java (I'm on 1.8.0_172)
+* Scala (I'm on 2.11.12)
+* Somewhere to write your code.  I'm in love with Intellij - just use the free community version.  You'll want the scala plugin, but they've started recommending that during new installs.
 
 # Running
 To build the relevant jar, run Maven (the mvn command):
