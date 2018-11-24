@@ -7,6 +7,8 @@
 #change permissions of files in this directory
 #chmod 777 * (BE CAREFUL WHERE YOU RUN THIS)
 
+#unzip gsod_all_years.zip gsod_1932.tar -d gsod-all
+
 unzip gsod_clean.zip
 mkdir test-gsod
 tar -xzvf gsod-all/gsod_2018.tar --strip=1 -C test-gsod
