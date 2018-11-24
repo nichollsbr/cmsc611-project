@@ -34,6 +34,8 @@ Java (I'm on 1.8.0_172)
 Scala (I'm on 2.11.12)
 
 # Running
+First, follow the instructions in data/unpack_noaa after downloading gsod_clean.zip from the shared directory.
+
 To run the job locally on your machine, take a look at the relevant run.sh file in the analytic folder.
 For instance, basic-rdd/run.sh
 
