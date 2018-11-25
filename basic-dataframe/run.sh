@@ -7,7 +7,110 @@
 
 #This is the Stage metrics, but I don't think we need these.
 #Single File
-CURR_DATE=$(date -u +"%Y-%m-%dT%H:%M:%S.%sZ") && APP_NAME=BasicDataframeRunner-$CURR_DATE && spark-submit --class cmsc.basic.df.BasicDataframeRunner --master local[1] --conf spark.app.name=$APP_NAME --conf spark.extraListeners=ch.cern.sparkmeasure.FlightRecorderStageMetrics --conf spark.executorEnv.stageMetricsFileName=/tmp/spark-stats/$APP_NAME --conf spark.executorEnv.stageMetricsFormat="json" target/basic-dataframe-1.0.0-SNAPSHOT-shaded.jar ../data/test-gsod/010010-99999-2018.op.csv.gz
+#CURR_DATE=$(date -u +"%Y-%m-%dT%H:%M:%S.%sZ") && APP_NAME=BasicDataframeRunner-$CURR_DATE && spark-submit --class cmsc.basic.df.BasicDataframeRunner --master local[1] --conf spark.app.name=$APP_NAME --conf spark.extraListeners=ch.cern.sparkmeasure.FlightRecorderTaskMetrics --conf spark.executorEnv.taskMetricsFileName=/tmp/spark-stats/$APP_NAME --conf spark.executorEnv.taskMetricsFormat="json" target/basic-dataframe-1.0.0-SNAPSHOT-shaded.jar ../data/test-gsod/010010-99999-2018.op.csv.gz
 
 #All test files
-#CURR_DATE=$(date -u +"%Y-%m-%dT%H:%M:%S.%sZ") && APP_NAME=BasicDataframeRunner-$CURR_DATE && spark-submit --class cmsc.basic.df.BasicDataframeRunner --master local[1] --conf spark.app.name=$APP_NAME --conf spark.extraListeners=ch.cern.sparkmeasure.FlightRecorderStageMetrics --conf spark.executorEnv.stageMetricsFileName=/tmp/spark-stats/$APP_NAME --conf spark.executorEnv.stageMetricsFormat="json" target/basic-dataframe-1.0.0-SNAPSHOT-shaded.jar ../data/test-gsod/
+echo "-----Task Metrics-----"
+echo "Local Basic Dataframe. Lowest memory settings. One thread. Staging Metrics."
+CURR_DATE=$(date -u +"%Y-%m-%dT%H:%M:%S.%sZ")
+APP_NAME=BasicDataframeRunner-$CURR_DATE
+echo $APP_NAME
+spark-submit --class cmsc.basic.df.BasicDataframeRunner --master local[1] --driver-memory 512m --executor-memory 512m --conf spark.driver.memoryOverhead=384m --conf spark.executor.memoryOverhead=384m --conf spark.app.name=$APP_NAME --conf spark.extraListeners=ch.cern.sparkmeasure.FlightRecorderTaskMetrics --conf spark.executorEnv.taskMetricsFileName=../spark-stats/$APP_NAME --conf spark.executorEnv.taskMetricsFormat="json" target/basic-dataframe-1.0.0-SNAPSHOT-shaded.jar ../data/test-gsod/
+
+echo "Local Basic Dataframe. Mid executor memory settings. One thread. Staging Metrics."
+CURR_DATE=$(date -u +"%Y-%m-%dT%H:%M:%S.%sZ")
+APP_NAME=BasicDataframeRunner-$CURR_DATE
+echo $APP_NAME
+spark-submit --class cmsc.basic.df.BasicDataframeRunner --master local[1] --driver-memory 512m --executor-memory 1024m --conf spark.driver.memoryOverhead=384m --conf spark.executor.memoryOverhead=384m --conf spark.app.name=$APP_NAME --conf spark.extraListeners=ch.cern.sparkmeasure.FlightRecorderTaskMetrics --conf spark.executorEnv.taskMetricsFileName=../spark-stats/$APP_NAME --conf spark.executorEnv.taskMetricsFormat="json" target/basic-dataframe-1.0.0-SNAPSHOT-shaded.jar ../data/test-gsod/
+
+echo "Local Basic Dataframe. Mid executor + executor overhead memory settings. One thread. Staging Metrics."
+CURR_DATE=$(date -u +"%Y-%m-%dT%H:%M:%S.%sZ")
+APP_NAME=BasicDataframeRunner-$CURR_DATE
+echo $APP_NAME
+spark-submit --class cmsc.basic.df.BasicDataframeRunner --master local[1] --driver-memory 512m --executor-memory 1024m --conf spark.driver.memoryOverhead=384m --conf spark.executor.memoryOverhead=768m --conf spark.app.name=$APP_NAME --conf spark.extraListeners=ch.cern.sparkmeasure.FlightRecorderTaskMetrics --conf spark.executorEnv.taskMetricsFileName=../spark-stats/$APP_NAME --conf spark.executorEnv.taskMetricsFormat="json" target/basic-dataframe-1.0.0-SNAPSHOT-shaded.jar ../data/test-gsod/
+
+echo "Local Basic Dataframe. High executor + mid executor overhead memory settings. One thread. Staging Metrics."
+CURR_DATE=$(date -u +"%Y-%m-%dT%H:%M:%S.%sZ")
+APP_NAME=BasicDataframeRunner-$CURR_DATE
+echo $APP_NAME
+spark-submit --class cmsc.basic.df.BasicDataframeRunner --master local[1] --driver-memory 512m --executor-memory 2048m --conf spark.driver.memoryOverhead=384m --conf spark.executor.memoryOverhead=768m --conf spark.app.name=$APP_NAME --conf spark.extraListeners=ch.cern.sparkmeasure.FlightRecorderTaskMetrics --conf spark.executorEnv.taskMetricsFileName=../spark-stats/$APP_NAME --conf spark.executorEnv.taskMetricsFormat="json" target/basic-dataframe-1.0.0-SNAPSHOT-shaded.jar ../data/test-gsod/
+
+echo "-----"
+
+echo "Local Basic Dataframe. Lowest memory settings. Two threads. Staging Metrics."
+CURR_DATE=$(date -u +"%Y-%m-%dT%H:%M:%S.%sZ")
+APP_NAME=BasicDataframeRunner-$CURR_DATE
+echo $APP_NAME
+spark-submit --class cmsc.basic.df.BasicDataframeRunner --master local[2] --driver-memory 512m --executor-memory 512m --conf spark.driver.memoryOverhead=384m --conf spark.executor.memoryOverhead=384m --conf spark.app.name=$APP_NAME --conf spark.extraListeners=ch.cern.sparkmeasure.FlightRecorderTaskMetrics --conf spark.executorEnv.taskMetricsFileName=../spark-stats/$APP_NAME --conf spark.executorEnv.taskMetricsFormat="json" target/basic-dataframe-1.0.0-SNAPSHOT-shaded.jar ../data/test-gsod/
+
+echo "Local Basic Dataframe. Mid executor memory settings. Two threads. Staging Metrics."
+CURR_DATE=$(date -u +"%Y-%m-%dT%H:%M:%S.%sZ")
+APP_NAME=BasicDataframeRunner-$CURR_DATE
+echo $APP_NAME
+spark-submit --class cmsc.basic.df.BasicDataframeRunner --master local[2] --driver-memory 512m --executor-memory 1024m --conf spark.driver.memoryOverhead=384m --conf spark.executor.memoryOverhead=384m --conf spark.app.name=$APP_NAME --conf spark.extraListeners=ch.cern.sparkmeasure.FlightRecorderTaskMetrics --conf spark.executorEnv.taskMetricsFileName=../spark-stats/$APP_NAME --conf spark.executorEnv.taskMetricsFormat="json" target/basic-dataframe-1.0.0-SNAPSHOT-shaded.jar ../data/test-gsod/
+
+echo "Local Basic Dataframe. Mid executor + executor overhead memory settings. Two threads. Staging Metrics."
+CURR_DATE=$(date -u +"%Y-%m-%dT%H:%M:%S.%sZ")
+APP_NAME=BasicDataframeRunner-$CURR_DATE
+echo $APP_NAME
+spark-submit --class cmsc.basic.df.BasicDataframeRunner --master local[2] --driver-memory 512m --executor-memory 1024m --conf spark.driver.memoryOverhead=384m --conf spark.executor.memoryOverhead=768m --conf spark.app.name=$APP_NAME --conf spark.extraListeners=ch.cern.sparkmeasure.FlightRecorderTaskMetrics --conf spark.executorEnv.taskMetricsFileName=../spark-stats/$APP_NAME --conf spark.executorEnv.taskMetricsFormat="json" target/basic-dataframe-1.0.0-SNAPSHOT-shaded.jar ../data/test-gsod/
+
+echo "Local Basic Dataframe. High executor + mid executor overhead memory settings. Two threads. Staging Metrics."
+CURR_DATE=$(date -u +"%Y-%m-%dT%H:%M:%S.%sZ")
+APP_NAME=BasicDataframeRunner-$CURR_DATE
+echo $APP_NAME
+spark-submit --class cmsc.basic.df.BasicDataframeRunner --master local[2] --driver-memory 512m --executor-memory 2048m --conf spark.driver.memoryOverhead=384m --conf spark.executor.memoryOverhead=768m --conf spark.app.name=$APP_NAME --conf spark.extraListeners=ch.cern.sparkmeasure.FlightRecorderTaskMetrics --conf spark.executorEnv.taskMetricsFileName=../spark-stats/$APP_NAME --conf spark.executorEnv.taskMetricsFormat="json" target/basic-dataframe-1.0.0-SNAPSHOT-shaded.jar ../data/test-gsod/
+
+echo "-----"
+
+echo "Local Basic Dataframe. Lowest memory settings. Three threads. Staging Metrics."
+CURR_DATE=$(date -u +"%Y-%m-%dT%H:%M:%S.%sZ")
+APP_NAME=BasicDataframeRunner-$CURR_DATE
+echo $APP_NAME
+spark-submit --class cmsc.basic.df.BasicDataframeRunner --master local[3] --driver-memory 512m --executor-memory 512m --conf spark.driver.memoryOverhead=384m --conf spark.executor.memoryOverhead=384m --conf spark.app.name=$APP_NAME --conf spark.extraListeners=ch.cern.sparkmeasure.FlightRecorderTaskMetrics --conf spark.executorEnv.taskMetricsFileName=../spark-stats/$APP_NAME --conf spark.executorEnv.taskMetricsFormat="json" target/basic-dataframe-1.0.0-SNAPSHOT-shaded.jar ../data/test-gsod/
+
+echo "Local Basic Dataframe. Mid executor memory settings. Three threads. Staging Metrics."
+CURR_DATE=$(date -u +"%Y-%m-%dT%H:%M:%S.%sZ")
+APP_NAME=BasicDataframeRunner-$CURR_DATE
+echo $APP_NAME
+spark-submit --class cmsc.basic.df.BasicDataframeRunner --master local[3] --driver-memory 512m --executor-memory 1024m --conf spark.driver.memoryOverhead=384m --conf spark.executor.memoryOverhead=384m --conf spark.app.name=$APP_NAME --conf spark.extraListeners=ch.cern.sparkmeasure.FlightRecorderTaskMetrics --conf spark.executorEnv.taskMetricsFileName=../spark-stats/$APP_NAME --conf spark.executorEnv.taskMetricsFormat="json" target/basic-dataframe-1.0.0-SNAPSHOT-shaded.jar ../data/test-gsod/
+
+echo "Local Basic Dataframe. Mid executor + executor overhead memory settings. Three threads. Staging Metrics."
+CURR_DATE=$(date -u +"%Y-%m-%dT%H:%M:%S.%sZ")
+APP_NAME=BasicDataframeRunner-$CURR_DATE
+echo $APP_NAME
+spark-submit --class cmsc.basic.df.BasicDataframeRunner --master local[3] --driver-memory 512m --executor-memory 1024m --conf spark.driver.memoryOverhead=384m --conf spark.executor.memoryOverhead=768m --conf spark.app.name=$APP_NAME --conf spark.extraListeners=ch.cern.sparkmeasure.FlightRecorderTaskMetrics --conf spark.executorEnv.taskMetricsFileName=../spark-stats/$APP_NAME --conf spark.executorEnv.taskMetricsFormat="json" target/basic-dataframe-1.0.0-SNAPSHOT-shaded.jar ../data/test-gsod/
+
+echo "Local Basic Dataframe. High executor + mid executor overhead memory settings. Three threads. Staging Metrics."
+CURR_DATE=$(date -u +"%Y-%m-%dT%H:%M:%S.%sZ")
+APP_NAME=BasicDataframeRunner-$CURR_DATE
+echo $APP_NAME
+spark-submit --class cmsc.basic.df.BasicDataframeRunner --master local[3] --driver-memory 512m --executor-memory 2048m --conf spark.driver.memoryOverhead=384m --conf spark.executor.memoryOverhead=768m --conf spark.app.name=$APP_NAME --conf spark.extraListeners=ch.cern.sparkmeasure.FlightRecorderTaskMetrics --conf spark.executorEnv.taskMetricsFileName=../spark-stats/$APP_NAME --conf spark.executorEnv.taskMetricsFormat="json" target/basic-dataframe-1.0.0-SNAPSHOT-shaded.jar ../data/test-gsod/
+
+echo "-----"
+
+echo "Local Basic Dataframe. Lowest memory settings. Four threads. Staging Metrics."
+CURR_DATE=$(date -u +"%Y-%m-%dT%H:%M:%S.%sZ")
+APP_NAME=BasicDataframeRunner-$CURR_DATE
+echo $APP_NAME
+spark-submit --class cmsc.basic.df.BasicDataframeRunner --master local[4] --driver-memory 512m --executor-memory 512m --conf spark.driver.memoryOverhead=384m --conf spark.executor.memoryOverhead=384m --conf spark.app.name=$APP_NAME --conf spark.extraListeners=ch.cern.sparkmeasure.FlightRecorderTaskMetrics --conf spark.executorEnv.taskMetricsFileName=../spark-stats/$APP_NAME --conf spark.executorEnv.taskMetricsFormat="json" target/basic-dataframe-1.0.0-SNAPSHOT-shaded.jar ../data/test-gsod/
+
+echo "Local Basic Dataframe. Mid executor memory settings. Four threads. Staging Metrics."
+CURR_DATE=$(date -u +"%Y-%m-%dT%H:%M:%S.%sZ")
+APP_NAME=BasicDataframeRunner-$CURR_DATE
+echo $APP_NAME
+spark-submit --class cmsc.basic.df.BasicDataframeRunner --master local[4] --driver-memory 512m --executor-memory 1024m --conf spark.driver.memoryOverhead=384m --conf spark.executor.memoryOverhead=384m --conf spark.app.name=$APP_NAME --conf spark.extraListeners=ch.cern.sparkmeasure.FlightRecorderTaskMetrics --conf spark.executorEnv.taskMetricsFileName=../spark-stats/$APP_NAME --conf spark.executorEnv.taskMetricsFormat="json" target/basic-dataframe-1.0.0-SNAPSHOT-shaded.jar ../data/test-gsod/
+
+echo "Local Basic Dataframe. Mid executor + executor overhead memory settings. Four threads. Staging Metrics."
+CURR_DATE=$(date -u +"%Y-%m-%dT%H:%M:%S.%sZ")
+APP_NAME=BasicDataframeRunner-$CURR_DATE
+echo $APP_NAME
+spark-submit --class cmsc.basic.df.BasicDataframeRunner --master local[4] --driver-memory 512m --executor-memory 1024m --conf spark.driver.memoryOverhead=384m --conf spark.executor.memoryOverhead=768m --conf spark.app.name=$APP_NAME --conf spark.extraListeners=ch.cern.sparkmeasure.FlightRecorderTaskMetrics --conf spark.executorEnv.taskMetricsFileName=../spark-stats/$APP_NAME --conf spark.executorEnv.taskMetricsFormat="json" target/basic-dataframe-1.0.0-SNAPSHOT-shaded.jar ../data/test-gsod/
+
+echo "Local Basic Dataframe. High executor + mid executor overhead memory settings. Four threads. Staging Metrics."
+CURR_DATE=$(date -u +"%Y-%m-%dT%H:%M:%S.%sZ")
+APP_NAME=BasicDataframeRunner-$CURR_DATE
+echo $APP_NAME
+spark-submit --class cmsc.basic.df.BasicDataframeRunner --master local[4] --driver-memory 512m --executor-memory 2048m --conf spark.driver.memoryOverhead=384m --conf spark.executor.memoryOverhead=768m --conf spark.app.name=$APP_NAME --conf spark.extraListeners=ch.cern.sparkmeasure.FlightRecorderTaskMetrics --conf spark.executorEnv.taskMetricsFileName=../spark-stats/$APP_NAME --conf spark.executorEnv.taskMetricsFormat="json" target/basic-dataframe-1.0.0-SNAPSHOT-shaded.jar ../data/test-gsod/
+
+echo "-----End Task Metrics-----"
