@@ -29,15 +29,24 @@ mkdir /tmp/spark-dir/
 We can change the directory if that's an issue for windows.
 
 You'll also need:
-Maven (any version, but I'm on 3.5.3)
-Java (I'm on 1.8.0_172)
-Scala (I'm on 2.11.12)
+* Git (I recommend using a UI.  Though I've never used it on Windows, might I recommend Fork: https://git-fork.com/) 
+* Maven (any version, but I'm on 3.5.3)
+* Java (I'm on 1.8.0_172)
+* Scala (I'm on 2.11.12)
+* Somewhere to write your code.  I'm in love with Intellij - just use the free community version.  You'll want the scala plugin, but they've started recommending that during new installs.
 
 # Running
 First, follow the instructions in data/unpack_noaa after downloading gsod_csv.zip from the shared directory.
 
+To build the relevant jar, run Maven (the mvn command):
+```
+mvn clean install
+```
+in the parent directory (cmsc611-project).  If maven becomes too much of a pain, we can just commit the jar to the git repo.
+This should create a target directory in the children directories.  For instance, basic-rdd/target/ should exist.  Note this target directory will NOT be there if the mvn clean install command did not work.
+
 To run the job locally on your machine, take a look at the relevant run.sh file in the analytic folder.
-For instance, basic-rdd/run.sh
+For instance, basic-rdd/run.sh.  Here's some info about how the spark-submit command works: https://spark.apache.org/docs/2.1.0/submitting-applications.html#launching-applications-with-spark-submit
 
 You'll see that it will set up each spark app name so that it matches the output file for the metrics.
 
