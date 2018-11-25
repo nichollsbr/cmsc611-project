@@ -63,7 +63,7 @@ object BasicDatasetRunner {
     try {
       val analytic = new BasicDatasetRunner
       val data = readData(args(0))
-      data.printSchema()
+//      data.printSchema()
       val results = analytic.run(data)
       results.show()
     } finally {

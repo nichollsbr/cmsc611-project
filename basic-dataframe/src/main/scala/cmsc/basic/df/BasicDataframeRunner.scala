@@ -5,28 +5,33 @@ import java.io.File
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.{DataFrame, SparkSession}
 import org.apache.spark.sql.functions._
+import org.apache.spark.sql.types.IntegerType
 
 object BasicDataframeRunner {
 
   val columnNames = Seq(
-    "STN", //station number
-    "WBAN", //historical Weather Bureau Air Force Navy
-    "DAY", //yyyyMMdd
-    "TEMP", //average temp
-    "COUNT_TEMP", //number of results to calculate TEMP
-    "DEWP", //average dew point
-    "COUNT_DEWP", //number of results to calculate DEWP
-    "SLP", //average sea level pressure
-    "COUNT_SLP", //number of results to calculate SLP
-    "STP", //average station pressure
-    "COUNT_STP", //number of results to calculate STP
-    "VISIB", //average visibility
-    "COUNT_VISIB", //number of results to calculate VISIB
-    "WDSP", //average wind speed
-    "COUNT_WDSP", //number of results to calculate WDSP
-    "MXSPD", //max wind speed
-    "GUST", //max gust speed
-    "MAX_TEMP" //max temp
+    "stn", //station number
+    "wban", //historical Weather Bureau Air Force Navy
+    "day", //yyyyMMdd
+    "temp", //average temp
+    "countTemp", //number of results to calculate TEMP
+    "dewp", //average dew point
+    "countDewp", //number of results to calculate DEWP
+    "slp", //average sea level pressure
+    "countSlp", //number of results to calculate SLP
+    "stp", //average station pressure
+    "countStp", //number of results to calculate STP
+    "visib", //average visibility
+    "countVisib", //number of results to calculate VISIB
+    "wdsp", //average wind speed
+    "countWdsp", //number of results to calculate WDSP
+    "mxSpd", //max wind speed
+    "gust", //max gust speed
+    "maxTemp", //max temp
+    "minTemp", //min temp
+    "prcp", //precipitation
+    "sndp", //snow depth
+    "frshtt" //Indicators of For, Rain/Drizzle, Snow/Ice Pellets, Hail, Thunder, Tornado/Funnel Cloud
   )
 
   def main(args: Array[String]): Unit = {
@@ -53,7 +58,9 @@ object BasicDataframeRunner {
       .option("inferSchema", true)
       .option("ignoreLeadingWhiteSpace", true)
       .option("ignoreTrailingWhiteSpace", true)
+//      .option("dateFormat", "yyyyMMdd")
       .csv(file.getAbsolutePath)
+      .toDF(columnNames:_*)
   }
 }
 
@@ -62,8 +69,7 @@ class BasicDataframeRunner {
 
   def run(rawData: DataFrame) : DataFrame = {
     rawData
-      .select(rawData.columns.zip(columnNames).map{ case (oldName: String, newName: String) => col(oldName).as(newName)} : _*)
-      .groupBy(col("STN"), (col("TEMP") - pmod(col("TEMP"), lit(10))).as("TEMP_BUCKET"))
+      .groupBy(col("stn"), (col("temp") - pmod(col("temp"), lit(10))).as("TEMP_BUCKET").cast(IntegerType))
       .count()
   }
 }
