@@ -4,8 +4,30 @@ import java.io.File
 
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.{DataFrame, SparkSession}
+import org.apache.spark.sql.functions._
 
 object BasicDataframeRunner {
+
+  val columnNames = Seq(
+    "STN", //station number
+    "WBAN", //historical Weather Bureau Air Force Navy
+    "DAY", //yyyyMMdd
+    "TEMP", //average temp
+    "COUNT_TEMP", //number of results to calculate TEMP
+    "DEWP", //average dew point
+    "COUNT_DEWP", //number of results to calculate DEWP
+    "SLP", //average sea level pressure
+    "COUNT_SLP", //number of results to calculate SLP
+    "STP", //average station pressure
+    "COUNT_STP", //number of results to calculate STP
+    "VISIB", //average visibility
+    "COUNT_VISIB", //number of results to calculate VISIB
+    "WDSP", //average wind speed
+    "COUNT_WDSP", //number of results to calculate WDSP
+    "MXSPD", //max wind speed
+    "GUST", //max gust speed
+    "MAX_TEMP" //max temp
+  )
 
   def main(args: Array[String]): Unit = {
     val sparkConf = new SparkConf().set("spark.eventLog.enabled", "true")
@@ -13,12 +35,10 @@ object BasicDataframeRunner {
     sparkSession.sparkContext.setLogLevel("WARN")
 
     try {
-      //Work on this part
       val analytic = new BasicDataframeRunner
       val data = readData(args(0))
       val results = analytic.run(data)
-      results.printSchema()
-      println(results.count())
+      results.show()
     } finally {
       sparkSession.stop()
     }
@@ -27,18 +47,22 @@ object BasicDataframeRunner {
   //Keep improving
   def readData(dataLoc: String)(implicit sparkSession: SparkSession)= {
     val file = new File(dataLoc)
-    sparkSession.read.option("header", true).csv(file.getAbsolutePath)
+    sparkSession.read
+      .option("sep", ",")
+      .option("inferSchema", true)
+      .option("ignoreLeadingWhiteSpace", true)
+      .option("ignoreTrailingWhiteSpace", true)
+      .csv(file.getAbsolutePath)
   }
 }
 
 class BasicDataframeRunner {
+  import BasicDataframeRunner._
+
   def run(rawData: DataFrame) : DataFrame = {
     rawData
-//    rawData
-//      .mapPartitions(iter => iter.map(s => {
-//      val key = s.split("\\s+")
-//      (key(0) + " " + key(1), 1l)
-//    }))
-//      .aggregateByKey(0l)(_+_, _+_)
+      .select(rawData.columns.zip(columnNames).map{ case (oldName: String, newName: String) => col(oldName).as(newName)} : _*)
+      .groupBy(col("STN"), (col("TEMP") - pmod(col("TEMP"), lit(10))).as("TEMP_BUCKET"))
+      .count()
   }
 }

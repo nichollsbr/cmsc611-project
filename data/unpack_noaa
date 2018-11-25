@@ -9,7 +9,11 @@
 
 #unzip gsod_all_years.zip gsod_1932.tar -d gsod-all
 
-unzip gsod_clean.zip
+#unzip gsod_clean.zip
+#mkdir test-gsod
+#tar -xzvf gsod-all/gsod_2018.tar --strip=1 -C test-gsod
+
+unzip gsod_csv.zip -d gsod-all
 mkdir test-gsod
 tar -xzvf gsod-all/gsod_2018.tar --strip=1 -C test-gsod
 
