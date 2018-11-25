@@ -65,7 +65,8 @@ object BasicDatasetRunner {
       val data = readData(args(0))
 //      data.printSchema()
       val results = analytic.run(data)
-      results.show()
+      println(results.count())
+//      results.show()
     } finally {
       sparkSession.stop()
     }

@@ -11,12 +11,13 @@ object BasicRDDRunner {
   def main(args: Array[String]): Unit = {
     val sparkConf = new SparkConf().set("spark.eventLog.enabled", "true")
     implicit val sparkSession: SparkSession = SparkSession.builder().config(sparkConf).getOrCreate()
+    sparkSession.sparkContext.setLogLevel("WARN")
 
     try {
       val analytic = new BasicRDDRunner
       val data = readData(args(0))
       //The print of the count below forces the whole job to run.
-      analytic.run(data).foreach(println)
+      println(analytic.run(data).count())
     } finally {
       sparkSession.stop()
     }
