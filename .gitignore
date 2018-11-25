@@ -3,8 +3,12 @@
 
 target/
 data/noaa/
+data/gsod-all/
 data/test-gsod/
+data/gsod_2018/
 data/noaa-global-surface-summary-of-the-day.zip
+data/gsod_csv.zip
+data/gsod_clean.zip
 
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and WebStorm
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839

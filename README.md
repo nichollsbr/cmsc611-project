@@ -36,6 +36,8 @@ You'll also need:
 * Somewhere to write your code.  I'm in love with Intellij - just use the free community version.  You'll want the scala plugin, but they've started recommending that during new installs.
 
 # Running
+First, follow the instructions in data/unpack_noaa after downloading gsod_csv.zip from the shared directory.
+
 To build the relevant jar, run Maven (the mvn command):
 ```
 mvn clean install
@@ -69,6 +71,8 @@ If it's not there, that's because the port is already taken, probably by a job i
 
 
 # To Start History Server
+You'll need to create /tmp/spark-events.  Need to double check what to do for Windows.  For some reason, my mac deleted this at one point, not sure why.
+
 https://jaceklaskowski.gitbooks.io/mastering-apache-spark/spark-history-server.html
 go to $SPARK_HOME/sbin/start-history-server.sh
 

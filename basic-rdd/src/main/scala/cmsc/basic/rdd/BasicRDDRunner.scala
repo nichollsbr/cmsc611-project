@@ -13,16 +13,15 @@ object BasicRDDRunner {
     implicit val sparkSession: SparkSession = SparkSession.builder().config(sparkConf).getOrCreate()
 
     try {
-      //Work on this part
       val analytic = new BasicRDDRunner
       val data = readData(args(0))
-      println(analytic.run(data).count())
+      //The print of the count below forces the whole job to run.
+      analytic.run(data).foreach(println)
     } finally {
       sparkSession.stop()
     }
   }
 
-  //Keep improving
   def readData(dataLoc: String)(implicit sparkSession: SparkSession)= {
     val file = new File(dataLoc)
     sparkSession.sparkContext.textFile(file.getAbsolutePath)
@@ -30,11 +29,18 @@ object BasicRDDRunner {
 }
 
 class BasicRDDRunner {
-  def run(rawData: RDD[String]) : RDD[(String, Long)] = {
+  /*
+   * Group by the station number and the bucket of the mean temperature of the day (i.e. the lowest value of 10s to the
+   * mean temperature.
+   *
+   * It'd be great if we could get numbers between -10 and 0 to map to -10 bucket, but that can be a later issue.
+   */
+  def run(rawData: RDD[String]) : RDD[((String, Int), Long)] = {
     rawData
       .mapPartitions(iter => iter.map(s => {
-      val key = s.split("\\s+")
-      (key(0) + " " + key(1), 1l)
+        val key = s.split(",")
+        val temp = key(3).toDouble.toInt
+        ((key(0), temp - temp%10), 1l)
     }))
       .aggregateByKey(0l)(_+_, _+_)
   }
