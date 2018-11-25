@@ -38,6 +38,8 @@ You'll also need:
 # Running
 First, follow the instructions in data/unpack_noaa after downloading gsod_csv.zip from the shared directory.
 
+Then go to the /tmp directory and make the spark-stats directory.
+
 To build the relevant jar, run Maven (the mvn command):
 ```
 mvn clean install
