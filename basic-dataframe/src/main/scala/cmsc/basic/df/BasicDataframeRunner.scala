@@ -37,6 +37,7 @@ object BasicDataframeRunner {
     try {
       val analytic = new BasicDataframeRunner
       val data = readData(args(0))
+      data.printSchema()
       val results = analytic.run(data)
       results.show()
     } finally {
