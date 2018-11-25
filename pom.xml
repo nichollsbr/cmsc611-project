@@ -9,6 +9,7 @@
   <modules>
     <module>basic-rdd</module>
     <module>basic-dataframe</module>
+    <module>basic-dataset</module>
   </modules>
 
   <properties>
