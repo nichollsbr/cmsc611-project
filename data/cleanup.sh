@@ -4,8 +4,8 @@ CURR_DIR=$(pwd)
 rm -rf gsod-all
 rm -f gsod_csv.zip
 mkdir gsod-all
-# unzip gsod_all_years.zip -d gsod-all
-unzip gsod_all_years.zip gsod_1932.tar gsod_1933.tar -d gsod-all > /dev/null
+unzip gsod_all_years.zip -d gsod-all > /dev/null
+# unzip gsod_all_years.zip gsod_1932.tar gsod_1933.tar -d gsod-all > /dev/null
 
 cd gsod-all
 
