@@ -25,8 +25,7 @@ def parse_spark_output_file(header_name, name):
         if thread_group and data_file_name_group:
             thread_count = word_to_int(thread_group.group().split()[0])
             data_file_name = data_file_name_group.group()
-            key1 = header_name + data_file_name
-            key = key1.replace(":", "_")
+            key = f"{header_name}{data_file_name}".replace(":", "_")
             data_dict[key] = thread_count
     return data_dict
 
@@ -58,8 +57,8 @@ def generate_thread_count_peak_graph(data_directory, file_header, spark_output_p
     plt.show()
 
 
-DATAFRAME_DIRECTORY = r"/Users/bnicholls/Documents/School/cmsc611-project/stats/dataframe-stats"
-SPARK_DATAFRAME_OUTPUT_FILE = r"/Users/bnicholls/Documents/School/cmsc611-project/stats/metrics-output/spark-stats-dataframe-task_metrics_run_output"
+DATAFRAME_DIRECTORY = r"C:\\Users\maria\Documents\Grad School\Fall2018\CMSC611\Projects\spark-stats-dataframe-20181127T232049Z-001\spark-stats-dataframe"
+SPARK_DATAFRAME_OUTPUT_FILE = r"C:\\Users\maria\Documents\Grad School\Fall2018\CMSC611\Projects\spark-stats-dataframe-task_metrics_run_output"
 DATAFRAME_FILE_NAME = "BasicDataframeRunner"
 DATAFRAME_PLOT_TITLE = "Spark DataFrame Metrics"
 DATAFRAME_X_LABEL = "Thread Count"
@@ -69,8 +68,8 @@ generate_thread_count_peak_graph(DATAFRAME_DIRECTORY, DATAFRAME_FILE_NAME,
                                  SPARK_DATAFRAME_OUTPUT_FILE, DATAFRAME_PLOT_TITLE, DATAFRAME_X_LABEL, DATAFRAME_Y_LABEL)
 
 
-DATASET_DIRECTORY = r"/Users/bnicholls/Documents/School/cmsc611-project/stats/dataset-stats"
-SPARK_DATASET_OUTPUT_FILE = r"/Users/bnicholls/Documents/School/cmsc611-project/stats/metrics-output/spark-stats-dataset-task_metrics_run_output"
+DATASET_DIRECTORY = r"C:\\Users\maria\Documents\Grad School\Fall2018\CMSC611\Projects\spark-stats-datasets-20181127T234407Z-001\spark-stats-datasets"
+SPARK_DATASET_OUTPUT_FILE = r"C:\\Users\maria\Documents\Grad School\Fall2018\CMSC611\Projects\spark-stats-dataset-task_metrics_run_output"
 DATASET_FILE_NAME = "BasicDatasetRunner"
 DATASET_PLOT_TITLE = "Spark Dataset Metrics"
 DATASET_X_LABEL = "Thread Count"
@@ -79,8 +78,8 @@ DATASET_Y_LABEL = "Peak Memory (Power of 7)"
 generate_thread_count_peak_graph(DATASET_DIRECTORY, DATASET_FILE_NAME,
                                  SPARK_DATASET_OUTPUT_FILE, DATASET_PLOT_TITLE, DATASET_X_LABEL, DATASET_Y_LABEL)
 
-RDD_DIRECTORY = r"/Users/bnicholls/Documents/School/cmsc611-project/stats/rdd-stats"
-SPARK_RDD_OUTPUT_FILE = r"/Users/bnicholls/Documents/School/cmsc611-project/stats/metrics-output/spark-stats-rdd-task_metrics_run_output"
+RDD_DIRECTORY = r"C:\\Users\maria\Documents\Grad School\Fall2018\CMSC611\Projects\spark-stats-rdd-20181129T000233Z-001\spark-stats-rdd"
+SPARK_RDD_OUTPUT_FILE = r"C:\\Users\maria\Documents\Grad School\Fall2018\CMSC611\Projects\spark-stats-rdd-task_metrics_run_output"
 RDD_FILE_NAME = "BasicRDDRunner"
 RDD_PLOT_TITLE = "Spark RDD Metrics"
 RDD_X_LABEL = "Thread Count"
