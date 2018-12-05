@@ -1,116 +1,161 @@
 #!/usr/bin/env bash
-# We use the following commands before each run to ensure the app id is unique
-#CURR_DATE=$(date -u +"%Y-%m-%dT%H:%M:%S.%sZ") && APP_NAME=BasicRDDRunner-$CURR_DATE
+CLASS=BasicRDDRunner
+PACKAGE=cmsc.basic.rdd
+JAR=target/basic-rdd-1.0.0-SNAPSHOT-shaded.jar
 
-#No metrics
-#CURR_DATE=$(date -u +"%Y-%m-%dT%H:%M:%S.%sZ") && APP_NAME=BasicRDDRunner-$CURR_DATE && spark-submit --class cmsc.basic.rdd.BasicRDDRunner --master local[2] --conf spark.app.name=$APP_NAME target/basic-rdd-1.0.0-SNAPSHOT-shaded.jar ../data/test-gsod/
+echo "appName,threadCount,executorMem,overheadMem"
 
-#This is the Stage metrics, but I don't think we need these.
-#Single File
-#CURR_DATE=$(date -u +"%Y-%m-%dT%H:%M:%S.%sZ") && APP_NAME=BasicRDDRunner-$CURR_DATE && spark-submit --class cmsc.basic.rdd.BasicRDDRunner --master local[1] --conf spark.app.name=$APP_NAME --conf spark.extraListeners=ch.cern.sparkmeasure.FlightRecorderTaskMetrics --conf spark.executorEnv.taskMetricsFileName=/tmp/spark-stats/$APP_NAME --conf spark.executorEnv.taskMetricsFormat="json" target/basic-rdd-1.0.0-SNAPSHOT-shaded.jar ../data/test-gsod/010010-99999-2018.op.csv.gz
-
-#All test files
-echo "-----Task Metrics-----"
-echo "Local Basic RDD. Lowest memory settings. One thread. Staging Metrics."
 CURR_DATE=$(date -u +"%Y-%m-%dT%H:%M:%S.%sZ")
-APP_NAME=BasicRDDRunner-$CURR_DATE
-echo $APP_NAME
-spark-submit --class cmsc.basic.rdd.BasicRDDRunner --master local[1] --driver-memory 512m --executor-memory 512m --conf spark.driver.memoryOverhead=384m --conf spark.executor.memoryOverhead=384m --conf spark.app.name=$APP_NAME --conf spark.extraListeners=ch.cern.sparkmeasure.FlightRecorderTaskMetrics --conf spark.executorEnv.taskMetricsFileName=../spark-stats/$APP_NAME --conf spark.executorEnv.taskMetricsFormat="json" target/basic-rdd-1.0.0-SNAPSHOT-shaded.jar ../data/test-gsod/
+APP_NAME=${CLASS}-$CURR_DATE
+THREAD_COUNT=1
+EXECUTOR_MEM=512m
+OVERHEAD_MEM=384m
+echo ${APP_NAME},${THREAD_COUNT},${EXECUTOR_MEM},${OVERHEAD_MEM}
+spark-submit --class ${PACKAGE}.${CLASS} --master local[${THREAD_COUNT}] --driver-memory 512m --executor-memory ${EXECUTOR_MEM} --conf spark.driver.memoryOverhead=384m --conf spark.executor.memoryOverhead=${OVERHEAD_MEM} --conf spark.app.name=${APP_NAME} --conf spark.extraListeners=ch.cern.sparkmeasure.FlightRecorderTaskMetrics --conf spark.executorEnv.taskMetricsFileName=../spark-stats/$APP_NAME --conf spark.executorEnv.taskMetricsFormat="json" ${JAR} ../data/test-gsod/
 
-echo "Local Basic RDD. Mid executor memory settings. One thread. Staging Metrics."
 CURR_DATE=$(date -u +"%Y-%m-%dT%H:%M:%S.%sZ")
-APP_NAME=BasicRDDRunner-$CURR_DATE
-echo $APP_NAME
-spark-submit --class cmsc.basic.rdd.BasicRDDRunner --master local[1] --driver-memory 512m --executor-memory 1024m --conf spark.driver.memoryOverhead=384m --conf spark.executor.memoryOverhead=384m --conf spark.app.name=$APP_NAME --conf spark.extraListeners=ch.cern.sparkmeasure.FlightRecorderTaskMetrics --conf spark.executorEnv.taskMetricsFileName=../spark-stats/$APP_NAME --conf spark.executorEnv.taskMetricsFormat="json" target/basic-rdd-1.0.0-SNAPSHOT-shaded.jar ../data/test-gsod/
+APP_NAME=${CLASS}-$CURR_DATE
+THREAD_COUNT=1
+EXECUTOR_MEM=1024m
+OVERHEAD_MEM=384m
+echo ${APP_NAME},${THREAD_COUNT},${EXECUTOR_MEM},${OVERHEAD_MEM}
+spark-submit --class ${PACKAGE}.${CLASS} --master local[${THREAD_COUNT}] --driver-memory 512m --executor-memory ${EXECUTOR_MEM} --conf spark.driver.memoryOverhead=384m --conf spark.executor.memoryOverhead=${OVERHEAD_MEM} --conf spark.app.name=${APP_NAME} --conf spark.extraListeners=ch.cern.sparkmeasure.FlightRecorderTaskMetrics --conf spark.executorEnv.taskMetricsFileName=../spark-stats/$APP_NAME --conf spark.executorEnv.taskMetricsFormat="json" ${JAR} ../data/test-gsod/
 
-echo "Local Basic RDD. Mid executor + executor overhead memory settings. One thread. Staging Metrics."
 CURR_DATE=$(date -u +"%Y-%m-%dT%H:%M:%S.%sZ")
-APP_NAME=BasicRDDRunner-$CURR_DATE
-echo $APP_NAME
-spark-submit --class cmsc.basic.rdd.BasicRDDRunner --master local[1] --driver-memory 512m --executor-memory 1024m --conf spark.driver.memoryOverhead=384m --conf spark.executor.memoryOverhead=768m --conf spark.app.name=$APP_NAME --conf spark.extraListeners=ch.cern.sparkmeasure.FlightRecorderTaskMetrics --conf spark.executorEnv.taskMetricsFileName=../spark-stats/$APP_NAME --conf spark.executorEnv.taskMetricsFormat="json" target/basic-rdd-1.0.0-SNAPSHOT-shaded.jar ../data/test-gsod/
+APP_NAME=${CLASS}-$CURR_DATE
+THREAD_COUNT=1
+EXECUTOR_MEM=1024m
+OVERHEAD_MEM=768m
+echo ${APP_NAME},${THREAD_COUNT},${EXECUTOR_MEM},${OVERHEAD_MEM}
+spark-submit --class ${PACKAGE}.${CLASS} --master local[${THREAD_COUNT}] --driver-memory 512m --executor-memory ${EXECUTOR_MEM} --conf spark.driver.memoryOverhead=384m --conf spark.executor.memoryOverhead=${OVERHEAD_MEM} --conf spark.app.name=${APP_NAME} --conf spark.extraListeners=ch.cern.sparkmeasure.FlightRecorderTaskMetrics --conf spark.executorEnv.taskMetricsFileName=../spark-stats/$APP_NAME --conf spark.executorEnv.taskMetricsFormat="json" ${JAR} ../data/test-gsod/
 
-echo "Local Basic RDD. High executor + mid executor overhead memory settings. One thread. Staging Metrics."
 CURR_DATE=$(date -u +"%Y-%m-%dT%H:%M:%S.%sZ")
-APP_NAME=BasicRDDRunner-$CURR_DATE
-echo $APP_NAME
-spark-submit --class cmsc.basic.rdd.BasicRDDRunner --master local[1] --driver-memory 512m --executor-memory 2048m --conf spark.driver.memoryOverhead=384m --conf spark.executor.memoryOverhead=768m --conf spark.app.name=$APP_NAME --conf spark.extraListeners=ch.cern.sparkmeasure.FlightRecorderTaskMetrics --conf spark.executorEnv.taskMetricsFileName=../spark-stats/$APP_NAME --conf spark.executorEnv.taskMetricsFormat="json" target/basic-rdd-1.0.0-SNAPSHOT-shaded.jar ../data/test-gsod/
+APP_NAME=${CLASS}-$CURR_DATE
+THREAD_COUNT=1
+EXECUTOR_MEM=2048m
+OVERHEAD_MEM=768m
+echo ${APP_NAME},${THREAD_COUNT},${EXECUTOR_MEM},${OVERHEAD_MEM}
+spark-submit --class ${PACKAGE}.${CLASS} --master local[${THREAD_COUNT}] --driver-memory 512m --executor-memory ${EXECUTOR_MEM} --conf spark.driver.memoryOverhead=384m --conf spark.executor.memoryOverhead=${OVERHEAD_MEM} --conf spark.app.name=${APP_NAME} --conf spark.extraListeners=ch.cern.sparkmeasure.FlightRecorderTaskMetrics --conf spark.executorEnv.taskMetricsFileName=../spark-stats/$APP_NAME --conf spark.executorEnv.taskMetricsFormat="json" ${JAR} ../data/test-gsod/
 
-echo "-----"
-
-echo "Local Basic RDD. Lowest memory settings. Two threads. Staging Metrics."
+#2 thread
 CURR_DATE=$(date -u +"%Y-%m-%dT%H:%M:%S.%sZ")
-APP_NAME=BasicRDDRunner-$CURR_DATE
-echo $APP_NAME
-spark-submit --class cmsc.basic.rdd.BasicRDDRunner --master local[2] --driver-memory 512m --executor-memory 512m --conf spark.driver.memoryOverhead=384m --conf spark.executor.memoryOverhead=384m --conf spark.app.name=$APP_NAME --conf spark.extraListeners=ch.cern.sparkmeasure.FlightRecorderTaskMetrics --conf spark.executorEnv.taskMetricsFileName=../spark-stats/$APP_NAME --conf spark.executorEnv.taskMetricsFormat="json" target/basic-rdd-1.0.0-SNAPSHOT-shaded.jar ../data/test-gsod/
+APP_NAME=${CLASS}-$CURR_DATE
+THREAD_COUNT=2
+EXECUTOR_MEM=512m
+OVERHEAD_MEM=384m
+echo ${APP_NAME},${THREAD_COUNT},${EXECUTOR_MEM},${OVERHEAD_MEM}
+spark-submit --class ${PACKAGE}.${CLASS} --master local[${THREAD_COUNT}] --driver-memory 512m --executor-memory ${EXECUTOR_MEM} --conf spark.driver.memoryOverhead=384m --conf spark.executor.memoryOverhead=${OVERHEAD_MEM} --conf spark.app.name=${APP_NAME} --conf spark.extraListeners=ch.cern.sparkmeasure.FlightRecorderTaskMetrics --conf spark.executorEnv.taskMetricsFileName=../spark-stats/$APP_NAME --conf spark.executorEnv.taskMetricsFormat="json" ${JAR} ../data/test-gsod/
 
-echo "Local Basic RDD. Mid executor memory settings. Two threads. Staging Metrics."
 CURR_DATE=$(date -u +"%Y-%m-%dT%H:%M:%S.%sZ")
-APP_NAME=BasicRDDRunner-$CURR_DATE
-echo $APP_NAME
-spark-submit --class cmsc.basic.rdd.BasicRDDRunner --master local[2] --driver-memory 512m --executor-memory 1024m --conf spark.driver.memoryOverhead=384m --conf spark.executor.memoryOverhead=384m --conf spark.app.name=$APP_NAME --conf spark.extraListeners=ch.cern.sparkmeasure.FlightRecorderTaskMetrics --conf spark.executorEnv.taskMetricsFileName=../spark-stats/$APP_NAME --conf spark.executorEnv.taskMetricsFormat="json" target/basic-rdd-1.0.0-SNAPSHOT-shaded.jar ../data/test-gsod/
+APP_NAME=${CLASS}-$CURR_DATE
+THREAD_COUNT=2
+EXECUTOR_MEM=512m
+OVERHEAD_MEM=384m
+echo ${APP_NAME},${THREAD_COUNT},${EXECUTOR_MEM},${OVERHEAD_MEM}
+spark-submit --class ${PACKAGE}.${CLASS} --master local[${THREAD_COUNT}] --driver-memory 512m --executor-memory ${EXECUTOR_MEM} --conf spark.driver.memoryOverhead=384m --conf spark.executor.memoryOverhead=${OVERHEAD_MEM} --conf spark.app.name=${APP_NAME} --conf spark.extraListeners=ch.cern.sparkmeasure.FlightRecorderTaskMetrics --conf spark.executorEnv.taskMetricsFileName=../spark-stats/$APP_NAME --conf spark.executorEnv.taskMetricsFormat="json" ${JAR} ../data/test-gsod/
 
-echo "Local Basic RDD. Mid executor + executor overhead memory settings. Two threads. Staging Metrics."
 CURR_DATE=$(date -u +"%Y-%m-%dT%H:%M:%S.%sZ")
-APP_NAME=BasicRDDRunner-$CURR_DATE
-echo $APP_NAME
-spark-submit --class cmsc.basic.rdd.BasicRDDRunner --master local[2] --driver-memory 512m --executor-memory 1024m --conf spark.driver.memoryOverhead=384m --conf spark.executor.memoryOverhead=768m --conf spark.app.name=$APP_NAME --conf spark.extraListeners=ch.cern.sparkmeasure.FlightRecorderTaskMetrics --conf spark.executorEnv.taskMetricsFileName=../spark-stats/$APP_NAME --conf spark.executorEnv.taskMetricsFormat="json" target/basic-rdd-1.0.0-SNAPSHOT-shaded.jar ../data/test-gsod/
+APP_NAME=${CLASS}-$CURR_DATE
+THREAD_COUNT=2
+EXECUTOR_MEM=1024m
+OVERHEAD_MEM=384m
+echo ${APP_NAME},${THREAD_COUNT},${EXECUTOR_MEM},${OVERHEAD_MEM}
+spark-submit --class ${PACKAGE}.${CLASS} --master local[${THREAD_COUNT}] --driver-memory 512m --executor-memory ${EXECUTOR_MEM} --conf spark.driver.memoryOverhead=384m --conf spark.executor.memoryOverhead=${OVERHEAD_MEM} --conf spark.app.name=${APP_NAME} --conf spark.extraListeners=ch.cern.sparkmeasure.FlightRecorderTaskMetrics --conf spark.executorEnv.taskMetricsFileName=../spark-stats/$APP_NAME --conf spark.executorEnv.taskMetricsFormat="json" ${JAR} ../data/test-gsod/
 
-echo "Local Basic RDD. High executor + mid executor overhead memory settings. Two threads. Staging Metrics."
 CURR_DATE=$(date -u +"%Y-%m-%dT%H:%M:%S.%sZ")
-APP_NAME=BasicRDDRunner-$CURR_DATE
-echo $APP_NAME
-spark-submit --class cmsc.basic.rdd.BasicRDDRunner --master local[2] --driver-memory 512m --executor-memory 2048m --conf spark.driver.memoryOverhead=384m --conf spark.executor.memoryOverhead=768m --conf spark.app.name=$APP_NAME --conf spark.extraListeners=ch.cern.sparkmeasure.FlightRecorderTaskMetrics --conf spark.executorEnv.taskMetricsFileName=../spark-stats/$APP_NAME --conf spark.executorEnv.taskMetricsFormat="json" target/basic-rdd-1.0.0-SNAPSHOT-shaded.jar ../data/test-gsod/
+APP_NAME=${CLASS}-$CURR_DATE
+THREAD_COUNT=2
+EXECUTOR_MEM=1024m
+OVERHEAD_MEM=768m
+echo ${APP_NAME},${THREAD_COUNT},${EXECUTOR_MEM},${OVERHEAD_MEM}
+spark-submit --class ${PACKAGE}.${CLASS} --master local[${THREAD_COUNT}] --driver-memory 512m --executor-memory ${EXECUTOR_MEM} --conf spark.driver.memoryOverhead=384m --conf spark.executor.memoryOverhead=${OVERHEAD_MEM} --conf spark.app.name=${APP_NAME} --conf spark.extraListeners=ch.cern.sparkmeasure.FlightRecorderTaskMetrics --conf spark.executorEnv.taskMetricsFileName=../spark-stats/$APP_NAME --conf spark.executorEnv.taskMetricsFormat="json" ${JAR} ../data/test-gsod/
 
-echo "-----"
-
-echo "Local Basic RDD. Lowest memory settings. Three threads. Staging Metrics."
 CURR_DATE=$(date -u +"%Y-%m-%dT%H:%M:%S.%sZ")
-APP_NAME=BasicRDDRunner-$CURR_DATE
-echo $APP_NAME
-spark-submit --class cmsc.basic.rdd.BasicRDDRunner --master local[3] --driver-memory 512m --executor-memory 512m --conf spark.driver.memoryOverhead=384m --conf spark.executor.memoryOverhead=384m --conf spark.app.name=$APP_NAME --conf spark.extraListeners=ch.cern.sparkmeasure.FlightRecorderTaskMetrics --conf spark.executorEnv.taskMetricsFileName=../spark-stats/$APP_NAME --conf spark.executorEnv.taskMetricsFormat="json" target/basic-rdd-1.0.0-SNAPSHOT-shaded.jar ../data/test-gsod/
+APP_NAME=${CLASS}-$CURR_DATE
+THREAD_COUNT=2
+EXECUTOR_MEM=2048m
+OVERHEAD_MEM=768m
+echo ${APP_NAME},${THREAD_COUNT},${EXECUTOR_MEM},${OVERHEAD_MEM}
+spark-submit --class ${PACKAGE}.${CLASS} --master local[${THREAD_COUNT}] --driver-memory 512m --executor-memory ${EXECUTOR_MEM} --conf spark.driver.memoryOverhead=384m --conf spark.executor.memoryOverhead=${OVERHEAD_MEM} --conf spark.app.name=${APP_NAME} --conf spark.extraListeners=ch.cern.sparkmeasure.FlightRecorderTaskMetrics --conf spark.executorEnv.taskMetricsFileName=../spark-stats/$APP_NAME --conf spark.executorEnv.taskMetricsFormat="json" ${JAR} ../data/test-gsod/
 
-echo "Local Basic RDD. Mid executor memory settings. Three threads. Staging Metrics."
+#3 thread
 CURR_DATE=$(date -u +"%Y-%m-%dT%H:%M:%S.%sZ")
-APP_NAME=BasicRDDRunner-$CURR_DATE
-echo $APP_NAME
-spark-submit --class cmsc.basic.rdd.BasicRDDRunner --master local[3] --driver-memory 512m --executor-memory 1024m --conf spark.driver.memoryOverhead=384m --conf spark.executor.memoryOverhead=384m --conf spark.app.name=$APP_NAME --conf spark.extraListeners=ch.cern.sparkmeasure.FlightRecorderTaskMetrics --conf spark.executorEnv.taskMetricsFileName=../spark-stats/$APP_NAME --conf spark.executorEnv.taskMetricsFormat="json" target/basic-rdd-1.0.0-SNAPSHOT-shaded.jar ../data/test-gsod/
+APP_NAME=${CLASS}-$CURR_DATE
+THREAD_COUNT=3
+EXECUTOR_MEM=512m
+OVERHEAD_MEM=384m
+echo ${APP_NAME},${THREAD_COUNT},${EXECUTOR_MEM},${OVERHEAD_MEM}
+spark-submit --class ${PACKAGE}.${CLASS} --master local[${THREAD_COUNT}] --driver-memory 512m --executor-memory ${EXECUTOR_MEM} --conf spark.driver.memoryOverhead=384m --conf spark.executor.memoryOverhead=${OVERHEAD_MEM} --conf spark.app.name=${APP_NAME} --conf spark.extraListeners=ch.cern.sparkmeasure.FlightRecorderTaskMetrics --conf spark.executorEnv.taskMetricsFileName=../spark-stats/$APP_NAME --conf spark.executorEnv.taskMetricsFormat="json" ${JAR} ../data/test-gsod/
 
-echo "Local Basic RDD. Mid executor + executor overhead memory settings. Three threads. Staging Metrics."
 CURR_DATE=$(date -u +"%Y-%m-%dT%H:%M:%S.%sZ")
-APP_NAME=BasicRDDRunner-$CURR_DATE
-echo $APP_NAME
-spark-submit --class cmsc.basic.rdd.BasicRDDRunner --master local[3] --driver-memory 512m --executor-memory 1024m --conf spark.driver.memoryOverhead=384m --conf spark.executor.memoryOverhead=768m --conf spark.app.name=$APP_NAME --conf spark.extraListeners=ch.cern.sparkmeasure.FlightRecorderTaskMetrics --conf spark.executorEnv.taskMetricsFileName=../spark-stats/$APP_NAME --conf spark.executorEnv.taskMetricsFormat="json" target/basic-rdd-1.0.0-SNAPSHOT-shaded.jar ../data/test-gsod/
+APP_NAME=${CLASS}-$CURR_DATE
+THREAD_COUNT=3
+EXECUTOR_MEM=512m
+OVERHEAD_MEM=384m
+echo ${APP_NAME},${THREAD_COUNT},${EXECUTOR_MEM},${OVERHEAD_MEM}
+spark-submit --class ${PACKAGE}.${CLASS} --master local[${THREAD_COUNT}] --driver-memory 512m --executor-memory ${EXECUTOR_MEM} --conf spark.driver.memoryOverhead=384m --conf spark.executor.memoryOverhead=${OVERHEAD_MEM} --conf spark.app.name=${APP_NAME} --conf spark.extraListeners=ch.cern.sparkmeasure.FlightRecorderTaskMetrics --conf spark.executorEnv.taskMetricsFileName=../spark-stats/$APP_NAME --conf spark.executorEnv.taskMetricsFormat="json" ${JAR} ../data/test-gsod/
 
-echo "Local Basic RDD. High executor + mid executor overhead memory settings. Three threads. Staging Metrics."
 CURR_DATE=$(date -u +"%Y-%m-%dT%H:%M:%S.%sZ")
-APP_NAME=BasicRDDRunner-$CURR_DATE
-echo $APP_NAME
-spark-submit --class cmsc.basic.rdd.BasicRDDRunner --master local[3] --driver-memory 512m --executor-memory 2048m --conf spark.driver.memoryOverhead=384m --conf spark.executor.memoryOverhead=768m --conf spark.app.name=$APP_NAME --conf spark.extraListeners=ch.cern.sparkmeasure.FlightRecorderTaskMetrics --conf spark.executorEnv.taskMetricsFileName=../spark-stats/$APP_NAME --conf spark.executorEnv.taskMetricsFormat="json" target/basic-rdd-1.0.0-SNAPSHOT-shaded.jar ../data/test-gsod/
+APP_NAME=${CLASS}-$CURR_DATE
+THREAD_COUNT=3
+EXECUTOR_MEM=1024m
+OVERHEAD_MEM=384m
+echo ${APP_NAME},${THREAD_COUNT},${EXECUTOR_MEM},${OVERHEAD_MEM}
+spark-submit --class ${PACKAGE}.${CLASS} --master local[${THREAD_COUNT}] --driver-memory 512m --executor-memory ${EXECUTOR_MEM} --conf spark.driver.memoryOverhead=384m --conf spark.executor.memoryOverhead=${OVERHEAD_MEM} --conf spark.app.name=${APP_NAME} --conf spark.extraListeners=ch.cern.sparkmeasure.FlightRecorderTaskMetrics --conf spark.executorEnv.taskMetricsFileName=../spark-stats/$APP_NAME --conf spark.executorEnv.taskMetricsFormat="json" ${JAR} ../data/test-gsod/
 
-echo "-----"
-
-echo "Local Basic RDD. Lowest memory settings. Four threads. Staging Metrics."
 CURR_DATE=$(date -u +"%Y-%m-%dT%H:%M:%S.%sZ")
-APP_NAME=BasicRDDRunner-$CURR_DATE
-echo $APP_NAME
-spark-submit --class cmsc.basic.rdd.BasicRDDRunner --master local[4] --driver-memory 512m --executor-memory 512m --conf spark.driver.memoryOverhead=384m --conf spark.executor.memoryOverhead=384m --conf spark.app.name=$APP_NAME --conf spark.extraListeners=ch.cern.sparkmeasure.FlightRecorderTaskMetrics --conf spark.executorEnv.taskMetricsFileName=../spark-stats/$APP_NAME --conf spark.executorEnv.taskMetricsFormat="json" target/basic-rdd-1.0.0-SNAPSHOT-shaded.jar ../data/test-gsod/
+APP_NAME=${CLASS}-$CURR_DATE
+THREAD_COUNT=3
+EXECUTOR_MEM=1024m
+OVERHEAD_MEM=768m
+echo ${APP_NAME},${THREAD_COUNT},${EXECUTOR_MEM},${OVERHEAD_MEM}
+spark-submit --class ${PACKAGE}.${CLASS} --master local[${THREAD_COUNT}] --driver-memory 512m --executor-memory ${EXECUTOR_MEM} --conf spark.driver.memoryOverhead=384m --conf spark.executor.memoryOverhead=${OVERHEAD_MEM} --conf spark.app.name=${APP_NAME} --conf spark.extraListeners=ch.cern.sparkmeasure.FlightRecorderTaskMetrics --conf spark.executorEnv.taskMetricsFileName=../spark-stats/$APP_NAME --conf spark.executorEnv.taskMetricsFormat="json" ${JAR} ../data/test-gsod/
 
-echo "Local Basic RDD. Mid executor memory settings. Four threads. Staging Metrics."
 CURR_DATE=$(date -u +"%Y-%m-%dT%H:%M:%S.%sZ")
-APP_NAME=BasicRDDRunner-$CURR_DATE
-echo $APP_NAME
-spark-submit --class cmsc.basic.rdd.BasicRDDRunner --master local[4] --driver-memory 512m --executor-memory 1024m --conf spark.driver.memoryOverhead=384m --conf spark.executor.memoryOverhead=384m --conf spark.app.name=$APP_NAME --conf spark.extraListeners=ch.cern.sparkmeasure.FlightRecorderTaskMetrics --conf spark.executorEnv.taskMetricsFileName=../spark-stats/$APP_NAME --conf spark.executorEnv.taskMetricsFormat="json" target/basic-rdd-1.0.0-SNAPSHOT-shaded.jar ../data/test-gsod/
+APP_NAME=${CLASS}-$CURR_DATE
+THREAD_COUNT=3
+EXECUTOR_MEM=2048m
+OVERHEAD_MEM=768m
+echo ${APP_NAME},${THREAD_COUNT},${EXECUTOR_MEM},${OVERHEAD_MEM}
+spark-submit --class ${PACKAGE}.${CLASS} --master local[${THREAD_COUNT}] --driver-memory 512m --executor-memory ${EXECUTOR_MEM} --conf spark.driver.memoryOverhead=384m --conf spark.executor.memoryOverhead=${OVERHEAD_MEM} --conf spark.app.name=${APP_NAME} --conf spark.extraListeners=ch.cern.sparkmeasure.FlightRecorderTaskMetrics --conf spark.executorEnv.taskMetricsFileName=../spark-stats/$APP_NAME --conf spark.executorEnv.taskMetricsFormat="json" ${JAR} ../data/test-gsod/
 
-echo "Local Basic RDD. Mid executor + executor overhead memory settings. Four threads. Staging Metrics."
+#4 thread
 CURR_DATE=$(date -u +"%Y-%m-%dT%H:%M:%S.%sZ")
-APP_NAME=BasicRDDRunner-$CURR_DATE
-echo $APP_NAME
-spark-submit --class cmsc.basic.rdd.BasicRDDRunner --master local[4] --driver-memory 512m --executor-memory 1024m --conf spark.driver.memoryOverhead=384m --conf spark.executor.memoryOverhead=768m --conf spark.app.name=$APP_NAME --conf spark.extraListeners=ch.cern.sparkmeasure.FlightRecorderTaskMetrics --conf spark.executorEnv.taskMetricsFileName=../spark-stats/$APP_NAME --conf spark.executorEnv.taskMetricsFormat="json" target/basic-rdd-1.0.0-SNAPSHOT-shaded.jar ../data/test-gsod/
+APP_NAME=${CLASS}-$CURR_DATE
+THREAD_COUNT=4
+EXECUTOR_MEM=512m
+OVERHEAD_MEM=384m
+echo ${APP_NAME},${THREAD_COUNT},${EXECUTOR_MEM},${OVERHEAD_MEM}
+spark-submit --class ${PACKAGE}.${CLASS} --master local[${THREAD_COUNT}] --driver-memory 512m --executor-memory ${EXECUTOR_MEM} --conf spark.driver.memoryOverhead=384m --conf spark.executor.memoryOverhead=${OVERHEAD_MEM} --conf spark.app.name=${APP_NAME} --conf spark.extraListeners=ch.cern.sparkmeasure.FlightRecorderTaskMetrics --conf spark.executorEnv.taskMetricsFileName=../spark-stats/$APP_NAME --conf spark.executorEnv.taskMetricsFormat="json" ${JAR} ../data/test-gsod/
 
-echo "Local Basic RDD. High executor + mid executor overhead memory settings. Four threads. Staging Metrics."
 CURR_DATE=$(date -u +"%Y-%m-%dT%H:%M:%S.%sZ")
-APP_NAME=BasicRDDRunner-$CURR_DATE
-echo $APP_NAME
-spark-submit --class cmsc.basic.rdd.BasicRDDRunner --master local[4] --driver-memory 512m --executor-memory 2048m --conf spark.driver.memoryOverhead=384m --conf spark.executor.memoryOverhead=768m --conf spark.app.name=$APP_NAME --conf spark.extraListeners=ch.cern.sparkmeasure.FlightRecorderTaskMetrics --conf spark.executorEnv.taskMetricsFileName=../spark-stats/$APP_NAME --conf spark.executorEnv.taskMetricsFormat="json" target/basic-rdd-1.0.0-SNAPSHOT-shaded.jar ../data/test-gsod/
+APP_NAME=${CLASS}-$CURR_DATE
+THREAD_COUNT=4
+EXECUTOR_MEM=512m
+OVERHEAD_MEM=384m
+echo ${APP_NAME},${THREAD_COUNT},${EXECUTOR_MEM},${OVERHEAD_MEM}
+spark-submit --class ${PACKAGE}.${CLASS} --master local[${THREAD_COUNT}] --driver-memory 512m --executor-memory ${EXECUTOR_MEM} --conf spark.driver.memoryOverhead=384m --conf spark.executor.memoryOverhead=${OVERHEAD_MEM} --conf spark.app.name=${APP_NAME} --conf spark.extraListeners=ch.cern.sparkmeasure.FlightRecorderTaskMetrics --conf spark.executorEnv.taskMetricsFileName=../spark-stats/$APP_NAME --conf spark.executorEnv.taskMetricsFormat="json" ${JAR} ../data/test-gsod/
 
-echo "-----End Task Metrics-----"
+CURR_DATE=$(date -u +"%Y-%m-%dT%H:%M:%S.%sZ")
+APP_NAME=${CLASS}-$CURR_DATE
+THREAD_COUNT=4
+EXECUTOR_MEM=1024m
+OVERHEAD_MEM=384m
+echo ${APP_NAME},${THREAD_COUNT},${EXECUTOR_MEM},${OVERHEAD_MEM}
+spark-submit --class ${PACKAGE}.${CLASS} --master local[${THREAD_COUNT}] --driver-memory 512m --executor-memory ${EXECUTOR_MEM} --conf spark.driver.memoryOverhead=384m --conf spark.executor.memoryOverhead=${OVERHEAD_MEM} --conf spark.app.name=${APP_NAME} --conf spark.extraListeners=ch.cern.sparkmeasure.FlightRecorderTaskMetrics --conf spark.executorEnv.taskMetricsFileName=../spark-stats/$APP_NAME --conf spark.executorEnv.taskMetricsFormat="json" ${JAR} ../data/test-gsod/
+
+CURR_DATE=$(date -u +"%Y-%m-%dT%H:%M:%S.%sZ")
+APP_NAME=${CLASS}-$CURR_DATE
+THREAD_COUNT=4
+EXECUTOR_MEM=1024m
+OVERHEAD_MEM=768m
+echo ${APP_NAME},${THREAD_COUNT},${EXECUTOR_MEM},${OVERHEAD_MEM}
+spark-submit --class ${PACKAGE}.${CLASS} --master local[${THREAD_COUNT}] --driver-memory 512m --executor-memory ${EXECUTOR_MEM} --conf spark.driver.memoryOverhead=384m --conf spark.executor.memoryOverhead=${OVERHEAD_MEM} --conf spark.app.name=${APP_NAME} --conf spark.extraListeners=ch.cern.sparkmeasure.FlightRecorderTaskMetrics --conf spark.executorEnv.taskMetricsFileName=../spark-stats/$APP_NAME --conf spark.executorEnv.taskMetricsFormat="json" ${JAR} ../data/test-gsod/
+
+CURR_DATE=$(date -u +"%Y-%m-%dT%H:%M:%S.%sZ")
+APP_NAME=${CLASS}-$CURR_DATE
+THREAD_COUNT=4
+EXECUTOR_MEM=2048m
+OVERHEAD_MEM=768m
+echo ${APP_NAME},${THREAD_COUNT},${EXECUTOR_MEM},${OVERHEAD_MEM}
+spark-submit --class ${PACKAGE}.${CLASS} --master local[${THREAD_COUNT}] --driver-memory 512m --executor-memory ${EXECUTOR_MEM} --conf spark.driver.memoryOverhead=384m --conf spark.executor.memoryOverhead=${OVERHEAD_MEM} --conf spark.app.name=${APP_NAME} --conf spark.extraListeners=ch.cern.sparkmeasure.FlightRecorderTaskMetrics --conf spark.executorEnv.taskMetricsFileName=../spark-stats/$APP_NAME --conf spark.executorEnv.taskMetricsFormat="json" ${JAR} ../data/test-gsod/
