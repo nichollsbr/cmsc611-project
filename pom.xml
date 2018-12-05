@@ -10,6 +10,9 @@
     <module>basic-rdd</module>
     <module>basic-dataframe</module>
     <module>basic-dataset</module>
+    <module>partition-rdd</module>
+    <module>partition-dataframe</module>
+    <module>partition-dataset</module>
   </modules>
 
   <properties>
