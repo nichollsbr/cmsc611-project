@@ -40,8 +40,10 @@ class BasicRDDRunner {
     rawData
       .mapPartitions(iter => iter.map(s => {
         val key = s.split(",")
-        val temp = key(3).toDouble.toInt
-        ((key(0), temp - temp%10), 1l)
+        val temp = key(3).toDouble
+        val r = temp % 10
+        val pmod = if (r < 0) (r + 10) % 10 else r
+        ((key(0), (temp - pmod).toInt), 1l)
     }))
       .aggregateByKey(0l)(_+_, _+_)
   }

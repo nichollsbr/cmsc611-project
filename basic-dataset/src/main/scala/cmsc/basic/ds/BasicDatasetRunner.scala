@@ -95,7 +95,11 @@ class BasicDatasetRunner {
     import sparkSession.implicits._
 
     rawData
-      .groupByKey(rec => (rec.stn, (rec.temp - rec.temp%10).toInt))
+      .groupByKey(rec => {
+        val r = rec.temp % 10
+        val pmod = if (r < 0) (r + 10) % 10 else r
+        (rec.stn, (rec.temp - pmod).toInt)
+      })
       .count()
   }
 }
