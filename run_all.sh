@@ -1,4 +1,12 @@
 #!/usr/bin/env bash
+cd map-partitions-rdd
+./run.sh > map-partitions-rdd-run-output
+cd ..
+
+cd map-rdd
+./run.sh > map-rdd-run-output
+cd ..
+
 cd basic-dataframe
 ./run.sh > basic-dataframe-run-output
 cd ..

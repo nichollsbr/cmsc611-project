@@ -13,6 +13,8 @@
     <module>partition-rdd</module>
     <module>partition-dataframe</module>
     <module>partition-dataset</module>
+    <module>map-partitions-rdd</module>
+    <module>map-rdd</module>
   </modules>
 
   <properties>
