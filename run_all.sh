@@ -20,13 +20,17 @@ cd basic-rdd
 cd ..
 
 cd partition-dataframe
-./run.sh > basic-dataframe-run-output
+./run.sh > partition-dataframe-run-output
 cd ..
 
 cd partition-dataset
-./run.sh > basic-dataset-run-output
+./run.sh > partition-dataset-run-output
 cd ..
 
 cd partition-rdd
-./run.sh > basic-rdd-run-output
+./run.sh > partition-rdd-run-output
+cd ..
+
+cd kmeans-dataframe
+./run.sh > kmeans-dataframe-run-output
 cd ..
