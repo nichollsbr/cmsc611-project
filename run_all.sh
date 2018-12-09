@@ -38,3 +38,19 @@ cd ..
 cd kmeans-dataset
 ./run.sh > kmeans-dataset-run-output
 cd ..
+
+cd kmeans-rdd
+./run.sh > kmeans-rdd-run-output
+cd ..
+
+cd cache-dataframe
+./run.sh > cache-dataframe-run-output
+cd ..
+
+cd cache-dataset
+./run.sh > cache-dataset-run-output
+cd ..
+
+cd cache-rdd
+./run.sh > cache-rdd-run-output
+cd ..

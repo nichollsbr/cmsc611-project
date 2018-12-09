@@ -18,6 +18,9 @@
     <module>kmeans-dataframe</module>
     <module>kmeans-dataset</module>
     <module>kmeans-rdd</module>
+    <module>cache-dataframe</module>
+    <module>cache-dataset</module>
+    <module>cache-rdd</module>
   </modules>
 
   <properties>
