@@ -17,6 +17,7 @@
     <module>map-rdd</module>
     <module>kmeans-dataframe</module>
     <module>kmeans-dataset</module>
+    <module>kmeans-rdd</module>
   </modules>
 
   <properties>
