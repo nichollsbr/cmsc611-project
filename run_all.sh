@@ -34,3 +34,7 @@ cd ..
 cd kmeans-dataframe
 ./run.sh > kmeans-dataframe-run-output
 cd ..
+
+cd kmeans-dataset
+./run.sh > kmeans-dataset-run-output
+cd ..

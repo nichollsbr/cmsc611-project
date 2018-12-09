@@ -16,6 +16,7 @@
     <module>map-partitions-rdd</module>
     <module>map-rdd</module>
     <module>kmeans-dataframe</module>
+    <module>kmeans-dataset</module>
   </modules>
 
   <properties>
