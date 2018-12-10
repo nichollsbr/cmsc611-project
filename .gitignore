@@ -10,7 +10,7 @@ data/noaa-global-surface-summary-of-the-day.zip
 data/gsod_csv.zip
 data/gsod_clean.zip
 
-task_metrics_run_output
+*run-output
 spark-stats/
 stats/
 
