@@ -39,39 +39,109 @@ email address}
 \maketitle
 
 \begin{abstract}
-This document is a model and instructions for \LaTeX.
-This and the IEEEtran.cls file define the components of your paper [title, text, heads, etc.]. *CRITICAL: Do Not Use Symbols, Special Characters, Footnotes, 
-or Math in Paper Title or Abstract.
+Write Abstract
 \end{abstract}
 
 \begin{IEEEkeywords}
-component, formatting, style, styling, insert
+spark,benchmark,resource
 \end{IEEEkeywords}
 
 \section{Introduction}
-This document is a model and instructions for \LaTeX.
-Please observe the conference page limits. 
+Write Intro
 
-\section{Ease of Use}
+\subsection{Hi}
 
-\subsection{Maintaining the Integrity of the Specifications}
+\section{Data Discussion}
+Mention the data and some stats including:
+Size in bytes of the input data for local testing (can get this from metrics)
+Number of records of the input data for local testing
 
-The IEEEtran class file is used to format your paper and style the text. All margins, 
-column widths, line spaces, and text fonts are prescribed; please do not 
-alter them. You may note peculiarities. For example, the head margin
-measures proportionately more than is customary. This measurement 
-and others are deliberate, using specifications that anticipate your paper 
-as one part of the entire proceedings, and not as an independent document. 
-Please do not revise any of the current designations.
+Mention data preparation
 
-\section{Prepare Your Paper Before Styling}
-Before you begin to format your paper, first write and save the content as a 
-separate text file. Complete all content and organizational editing before 
-formatting.
+If we do the cluster, there'll be more data, so we'll want to discuss those stats as well.
 
-Keep your text and graphic files separate until after the text has been 
-formatted and styled. Do not number text heads---{\LaTeX} will do that 
-for you.
+\section{Map vs MapPartitions in RDD}
+We need to make this comparison to determine how to work with RDDs for future usage.
+Should find the blog post that talked about map vs mapPartitions.
+Mention the benefits of each (maybe include a reference)
+
+\subsection{Running on Local Machine}
+
+\subsubsection{Resource Usage Comparison}
+Create a bar plot or line graph that compares each settings configuration + peakExecution Memory
+-We may also want to look at some other memory metrics available
+
+\subsubsection{Execution Time Comparison}
+Find the min(launchTime) and max(finishTime) and compare to see if there's a time difference.
+Create a line or bar chart to compare all of them.
+
+\subsection{Running on Distributed Cluster}
+\subsubsection{Resource Usage Comparison}
+\subsubsection{Execution Time Comparison}
+
+\section{Basic RDD vs Dataset vs Dataframe}
+Talk about the job. Basically a grouping + count + count
+
+\subsection{Resource Comparison}
+Create a bar graph or line graph with 3 options to compare RDD vs dataframe vs dataset and the jobs per peakExecutionMemory
+
+\subsection{Execution Time Comparison}
+Create a bar graph or line graph with 3 options to compare RDD vs dataframe vs dataset and the jobs per execution time
+
+\section{Paritions RDD vs Dataset vs Dataframe}
+Talk about the job. Basically a grouping + count + count.  Discuss where the partitions happen
+
+\subsection{Compare Specified Partitions with True Partitions}
+The jobs look like we may have said "do x partitions", but it only create y partitions. This should be explored.
+Can we create a graphic for this?
+
+\subsection{Resource Comparison for different partitions}
+Create a line graph with 3 options to compare RDD vs dataframe vs dataset and the jobs per peakExecutionMemory
+
+\subsection{Execution Time Comparison}
+Create a line graph with 3 options to compare RDD vs dataframe vs dataset and the jobs per peakExecutionMemory for execution time
+
+
+\section{Cache RDD vs Dataset vs Dataframe}
+Talk about the job. Basically a grouping + count + count.  Discuss where the caching happens.
+
+\subsection{Discuss Issues with Caching}
+It looks like data had to spill to disk during the caching. We need to discuss this and other metrics that could be used
+to explain this behavior.
+
+\subsection{Resource Comparison for different partitions}
+Create a line graph with 3 options to compare RDD vs dataframe vs dataset and the jobs per peakExecutionMemory.  Need to explore other metrics
+
+\subsection{Execution Time Comparison}
+Create a line graph with 3 options to compare RDD vs dataframe vs dataset and the jobs per peakExecutionMemory for execution time. Need to explore other metrics
+
+Should we explore other caching levels?
+%https://spark.apache.org/docs/2.1.0/api/scala/index.html#org.apache.spark.rdd.RDD@persist(newLevel:org.apache.spark.storage.StorageLevel):RDD.this.type
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 \subsection{Abbreviations and Acronyms}\label{AA}
 Define abbreviations and acronyms the first time they are used in the text, 
@@ -79,29 +149,22 @@ even after they have been defined in the abstract. Abbreviations such as
 IEEE, SI, MKS, CGS, ac, dc, and rms do not have to be defined. Do not use 
 abbreviations in the title or heads unless they are unavoidable.
 
-\subsection{Units}
-\begin{itemize}
-\item Use either SI (MKS) or CGS as primary units. (SI units are encouraged.) English units may be used as secondary units (in parentheses). An exception would be the use of English units as identifiers in trade, such as ``3.5-inch disk drive''.
-\item Avoid combining SI and CGS units, such as current in amperes and magnetic field in oersteds. This often leads to confusion because equations do not balance dimensionally. If you must use mixed units, clearly state the units for each quantity that you use in an equation.
-\item Do not mix complete spellings and abbreviations of units: ``Wb/m\textsuperscript{2}'' or ``webers per square meter'', not ``webers/m\textsuperscript{2}''. Spell out units when they appear in text: ``. . . a few henries'', not ``. . . a few H''.
-\item Use a zero before decimal points: ``0.25'', not ``.25''. Use ``cm\textsuperscript{3}'', not ``cc''.)
-\end{itemize}
+%\subsection{Units}
+%\begin{itemize}
+%\item Use either SI (MKS) or CGS as primary units. (SI units are encouraged.) English units may be used as secondary units (in parentheses). An exception would be the use of English units as identifiers in trade, such as ``3.5-inch disk drive''.
+%\item Avoid combining SI and CGS units, such as current in amperes and magnetic field in oersteds. This often leads to confusion because equations do not balance dimensionally. If you must use mixed units, clearly state the units for each quantity that you use in an equation.
+%\item Do not mix complete spellings and abbreviations of units: ``Wb/m\textsuperscript{2}'' or ``webers per square meter'', not ``webers/m\textsuperscript{2}''. Spell out units when they appear in text: ``. . . a few henries'', not ``. . . a few H''.
+%\item Use a zero before decimal points: ``0.25'', not ``.25''. Use ``cm\textsuperscript{3}'', not ``cc''.)
+%\end{itemize}
 
-\subsection{Equations}
-Number equations consecutively. To make your 
-equations more compact, you may use the solidus (~/~), the exp function, or 
-appropriate exponents. Italicize Roman symbols for quantities and variables, 
-but not Greek symbols. Use a long dash rather than a hyphen for a minus 
-sign. Punctuate equations with commas or periods when they are part of a 
-sentence, as in:
-\begin{equation}
-a+b=\gamma\label{eq}
-\end{equation}
+%\begin{equation}
+%a+b=\gamma\label{eq}
+%\end{equation}
 
-Be sure that the 
-symbols in your equation have been defined before or immediately following 
-the equation. Use ``\eqref{eq}'', not ``Eq.~\eqref{eq}'' or ``equation \eqref{eq}'', except at 
-the beginning of a sentence: ``Equation \eqref{eq} is . . .''
+%Be sure that the
+%symbols in your equation have been defined before or immediately following
+%the equation. Use ``\eqref{eq}'', not ``Eq.~\eqref{eq}'' or ``equation \eqref{eq}'', except at
+%the beginning of a sentence: ``Equation \eqref{eq} is . . .''
 
 \subsection{\LaTeX-Specific Advice}
 
