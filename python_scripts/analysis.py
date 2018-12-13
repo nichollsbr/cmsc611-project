@@ -3,6 +3,8 @@ import re
 import matplotlib.pyplot as plt
 import json
 import os
+cwd = os.getcwd()
+base_dir = os.path.dirname(cwd)
 
 metric_output_mapping = {
     "basic-dataframe-run-output": "BasicDataframe",
@@ -21,7 +23,9 @@ metric_output_mapping = {
 }
 
 def get_associated_files(run_output_name):
-    files = os.listdir("../spark-stats")
+    files = os.listdir(base_dir + "/spark-stats")
     return [a_file for a_file in files if a_file.startswith(metric_output_mapping[run_output_name])]
 
+print(cwd)
+print(base_dir)
 print(get_associated_files("basic-dataframe-run-output"))
