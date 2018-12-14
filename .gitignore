@@ -10,7 +10,6 @@ data/noaa-global-surface-summary-of-the-day.zip
 data/gsod_csv.zip
 data/gsod_clean.zip
 
-*run-output
 spark-stats/
 stats/
 
@@ -87,3 +86,17 @@ fabric.properties
 paper/spark_paper.aux
 paper/spark_paper.pdf
 paper/spark_paper.synctex.gz
+basic-dataframe/basic-dataframe-run-output
+basic-dataset/basic-dataset-run-output
+basic-rdd/basic-rdd-run-output
+cache-dataframe/cache-dataframe-run-output
+cache-dataset/cache-dataset-run-output
+cache-rdd/cache-rdd-run-output
+kmeans-dataframe/kmeans-dataframe-run-output
+kmeans-dataset/kmeans-dataset-run-output
+kmeans-rdd/kmeans-rdd-run-output
+map-partitions-rdd/map-partitions-rdd-run-output
+map-rdd/map-rdd-run-output
+partition-dataframe/partition-dataframe-run-output
+partition-dataset/partition-dataset-run-output
+partition-rdd/partition-rdd-run-output
