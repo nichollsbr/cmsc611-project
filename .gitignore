@@ -100,3 +100,6 @@ map-rdd/map-rdd-run-output
 partition-dataframe/partition-dataframe-run-output
 partition-dataset/partition-dataset-run-output
 partition-rdd/partition-rdd-run-output
+python_scripts/.ipynb_checkpoints
+
+.DS_Store
