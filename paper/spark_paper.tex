@@ -55,6 +55,8 @@ AWS - Charge for resources used.  Execution time and resource usage are related.
 
 \section{Spark Discussion RDD vs Dataset vs DataFrame}
 
+Use task metrics available through spark so that others can take advantage.
+
 \section{Data Discussion}
 Mention the data and some stats including:
 Size in bytes of the input data for local testing (can get this from metrics)
@@ -94,6 +96,8 @@ Of course, we cannot trust the internet, so let's see how these two methods comp
     \label{fig:boat1}
 \end{figure}
 
+Thread analysis.
+Include graphic explaining what the jobs are
 Note that the BasicRDD and MapPartitions jobs are the exact same.  This just emphasizes that at least locally, there is no obvious advantage in terms of execution time.
 This leads us to the next question of if there is an advantage when it comes to the peak execution memory.
 
