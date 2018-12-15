@@ -54,9 +54,15 @@ AWS - Charge for resources used.  Execution time and resource usage are related.
 \subsection{Hi}
 
 \section{Spark Discussion RDD vs Dataset vs DataFrame}
+There are several differences between the 3 data formats that were used in this project.
+Resilient Distributed Dataset (RDD) data is an immutable representation of distributed data.
+RDD is best for unstructured data such as text and byte streams.
+Datasets in the simplest terms are an array of data.
+DataFrames organize data into columns, and provide a domain-specific API to manipulate distributed data.
 
 Use task metrics available through spark so that others can take advantage.
 
+https://databricks.com/blog/2016/07/14/a-tale-of-three-apache-spark-apis-rdds-dataframes-and-datasets.html
 \section{Data Discussion}
 Mention the data and some stats including:
 Size in bytes of the input data for local testing (can get this from metrics)
