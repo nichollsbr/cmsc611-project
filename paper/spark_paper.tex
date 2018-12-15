@@ -49,7 +49,11 @@ spark,benchmark,resource
 \section{Introduction}
 Write Intro
 
+AWS - Charge for resources used.  Execution time and resource usage are related.  Same with CPU Time
+
 \subsection{Hi}
+
+\section{Spark Discussion RDD vs Dataset vs DataFrame}
 
 \section{Data Discussion}
 Mention the data and some stats including:
@@ -61,16 +65,55 @@ Mention data preparation
 If we do the cluster, there'll be more data, so we'll want to discuss those stats as well.
 
 \section{Map vs MapPartitions in RDD}
-We need to make this comparison to determine how to work with RDDs for future usage.
-Should find the blog post that talked about map vs mapPartitions.
-Mention the benefits of each (maybe include a reference)
-Might be worthwhile to create another job that would call a toList on the partition iterator.
+As we develop the Spark jobs to perform the comparisons, we want to ensure that we are creating the best jobs, within
+reason. This means that we should write our Spark jobs with common optimizations.  One such optimization is the
+question of using the map method vs the mapPartitions method when working with RDDs.  Both methods will transform
+the elements of an RDD the desired way; however, mapPartitions operates on a partition (a subset of the data in an RDD)
+whereas a map only operates on an element.
+
+One of the benefits of using mapPartitions vs map is that you can generate non-serializable objects only one for a partition.
+For instance, FasterXML ObjectMapper is not serializable, so a Spark job cannot create just one and pass it around.
+There is a large initialization cost for creating an ObjectMapper, so you want to get as much reuse for one as possible.
+Thus, creating one per partition is much better.
+
+While there are no formal publications discussing the differences and advantages between
+these two methods and the potential optimizations, the general consensus on the internet is that mapPartitions is
+generally faster.  A few references follow this:
+https://stackoverflow.com/questions/21185092/apache-spark-map-vs-mappartitions
+https://martin.atlassian.net/wiki/spaces/lestermartin/blog/2016/05/19/67043332/why+spark+s+mapPartitions+transformation+is+faster+than+map+calls+your+function+once+partition+not+once+element
+https://www.quora.com/What-is-the-difference-between-a-map-and-mapPartitions-in-Spark
+
+Of course, we cannot trust the internet, so let's see how these two methods compare.
 
 \subsection{Running on Local Machine}
 
+\subsubsection{Execution Time Comparison}
+\begin{figure}
+    \includegraphics[width=\linewidth]{../python_scripts/images/mapVsMapPartitionsAllExecutionTime.png}
+    \caption{A boat.}
+    \label{fig:boat1}
+\end{figure}
+
+Note that the BasicRDD and MapPartitions jobs are the exact same.  This just emphasizes that at least locally, there is no obvious advantage in terms of execution time.
+This leads us to the next question of if there is an advantage when it comes to the peak execution memory.
+
 \subsubsection{Resource Usage Comparison}
+\begin{figure}
+    \includegraphics[width=\linewidth]{../python_scripts/images/mapVsMapPartitionsMaxPeakExecutionMemory.png}
+    \caption{A boat.}
+    \label{fig:boat1}
+\end{figure}
+
 Create a bar plot or line graph that compares each settings configuration + peakExecution Memory
 -We may also want to look at some other memory metrics available
+
+\subsubsection{CPU Time Comparison}
+\begin{figure}
+    \includegraphics[width=\linewidth]{../python_scripts/images/mapVsMapPartitionsAllCpuTime.png}
+    \caption{A boat.}
+    \label{fig:boat1}
+\end{figure}
+
 
 \subsubsection{Execution Time Comparison}
 Find the min(launchTime) and max(finishTime) and compare to see if there's a time difference.
@@ -79,6 +122,8 @@ Create a line or bar chart to compare all of them.
 \subsection{Running on Distributed Cluster}
 \subsubsection{Resource Usage Comparison}
 \subsubsection{Execution Time Comparison}
+
+Might be worthwhile to create another job that would call a toList on the partition iterator.
 
 \section{Basic RDD vs Dataset vs Dataframe}
 Talk about the job. Basically a grouping + count + count
@@ -119,7 +164,7 @@ Create a line graph with 3 options to compare RDD vs dataframe vs dataset and th
 Should we explore other caching levels?
 %https://spark.apache.org/docs/2.1.0/api/scala/index.html#org.apache.spark.rdd.RDD@persist(newLevel:org.apache.spark.storage.StorageLevel):RDD.this.type
 
-
+There's also joins
 
 
 
