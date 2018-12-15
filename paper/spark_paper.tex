@@ -53,12 +53,31 @@ AWS - Charge for resources used.  Execution time and resource usage are related.
 \subsection{Hi}
 
 \section{Spark Discussion RDD vs Dataset vs DataFrame}
-
 @Mariama
 
-Write jobs like beginners
+%Write jobs like beginners
 
-Use task metrics available through spark so that others can take advantage.
+%Use task metrics available through spark so that others can take advantage.
+There are several differences between the three data formats that were used in this project.
+Resilient Distributed Dataset (RDD) data is an immutable representation of distributed data.
+RDD is best for unstructured data such as text and byte streams.
+Datasets in the simplest terms are extensions of the Spark dataframe, and provide an object oriented interface.
+DataFrames organize data into columns, and provide a domain-specific API to manipulate distributed data.
+Data can be queried from both DataFrames and RDD through Spark SQL.
+
+Regarding the reported performance of the three data formats from other sources,
+RDD offer a data format solution that is less expensive than the other data formats.
+This is, however, at the sacrifice of data performance. For a more efficient data format, DataFrames and dataset provide
+a means of attaining greater optimization.
+Datasets in particular provides optimized queries through the Catalyst Query Optimizer (execution agnostic framework).
+The above performance notes will be apparent in the visualizations of the graphs in the pages that follow.
+
+# Note: Use task metrics available through spark so that others can take advantage.
+
+References:
+https://databricks.com/blog/2016/07/14/a-tale-of-three-apache-spark-apis-rdds-dataframes-and-datasets.html
+https://data-flair.training/blogs/apache-spark-rdd-vs-dataframe-vs-dataset/
+https://data-flair.training/blogs/apache-spark-dataset-tutorial/
 
 \subsection{SparkMeasure and Spark 2.4.0}
 
