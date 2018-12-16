@@ -53,14 +53,13 @@ object CacheDataframeRunner {
 
   //Keep improving
   def readData(dataLoc: String)(implicit sparkSession: SparkSession): DataFrame= {
-    val file = new File(dataLoc)
     sparkSession.read
       .option("sep", ",")
       .option("inferSchema", true)
       .option("ignoreLeadingWhiteSpace", true)
       .option("ignoreTrailingWhiteSpace", true)
 //      .option("dateFormat", "yyyyMMdd")
-      .csv(file.getAbsolutePath)
+      .csv(dataLoc)
       .toDF(columnNames:_*)
   }
 }

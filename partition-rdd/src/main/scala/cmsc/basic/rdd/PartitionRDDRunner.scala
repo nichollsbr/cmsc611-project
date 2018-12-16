@@ -25,8 +25,7 @@ object PartitionRDDRunner {
   }
 
   def readData(dataLoc: String)(implicit sparkSession: SparkSession)= {
-    val file = new File(dataLoc)
-    sparkSession.sparkContext.textFile(file.getAbsolutePath)
+    sparkSession.sparkContext.textFile(dataLoc)
   }
 }
 

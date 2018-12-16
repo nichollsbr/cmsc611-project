@@ -76,14 +76,13 @@ object PartitionDatasetRunner {
   def readData(dataLoc: String)(implicit sparkSession: SparkSession)= {
     import sparkSession.implicits._
 
-    val file = new File(dataLoc)
     sparkSession.read
       .option("sep", ",")
       .option("inferSchema", true)
       .option("ignoreLeadingWhiteSpace", true)
       .option("ignoreTrailingWhiteSpace", true)
       //      .option("dateFormat", "yyyyMMdd")
-      .csv(file.getAbsolutePath)
+      .csv(dataLoc)
       .toDF(columnNames:_*)
       .as[Record]
   }
