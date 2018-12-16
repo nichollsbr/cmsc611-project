@@ -50,14 +50,13 @@ Write Intro
 
 AWS - Charge for resources used.  Execution time and resource usage are related.  Same with CPU Time
 
-\subsection{Hi}
-
-\section{Spark Discussion RDD vs Dataset vs DataFrame}
-@Mariama
-
+%# Note: Use task metrics available through spark so that others can take advantage.
 %Write jobs like beginners
 
-%Use task metrics available through spark so that others can take advantage.
+\section{Spark Discussion RDD vs Dataset vs DataFrame}
+%@Mariama
+
+
 There are several differences between the three data formats that were used in this project.
 Resilient Distributed Dataset (RDD) data is an immutable representation of distributed data.
 RDD is best for unstructured data such as text and byte streams.
@@ -73,8 +72,6 @@ As specified in later sections, mapping and map partitions are optimizations tha
 for efficiency.
 Datasets in particular provides optimized queries through the Catalyst Query Optimizer (execution agnostic framework).
 The above performance notes will be apparent in the visualizations and analysis of the graphs in the pages that follow.
-
-# Note: Use task metrics available through spark so that others can take advantage.
 
 References:
 https://databricks.com/blog/2016/07/14/a-tale-of-three-apache-spark-apis-rdds-dataframes-and-datasets.html
@@ -172,23 +169,36 @@ Since this is the case, the remaining Spark jobs working with RDDs will utilize 
 %    \label{fig:boat1}
 %\end{figure}
 
-\subsection{Running on Distributed Cluster}
-\subsubsection{Resource Usage Comparison}
-\subsubsection{Execution Time Comparison}
+%\subsection{Running on Distributed Cluster}
+%\subsubsection{Resource Usage Comparison}
+%\subsubsection{Execution Time Comparison}
+%
+%Might be worthwhile to create another job that would call a toList on the partition iterator.
 
-Might be worthwhile to create another job that would call a toList on the partition iterator.
+\section{Basic RDD vs Dataset vs Dataframe}\label{basicjobs}
+The equivalent of the Hello World program for any big data analytics platform, including Spark, is Word Count.
+The basic premise of the Word Count program is to count all of the unique words in a document.
+The NOAA GSOD data does not easily support a Word Count program, so instead, a similar program was created to start the analysis of the peak execution memory for RDDs, DataFrames and Datasets.
+In this job, a key was created by combining the station number and the nearest multiple of 10 of the average temperature that does not go over the average temperate (Ex 98 $\rightarrow$ 90).
+Each unique key is the counted.
+The output of the program is a count of all of the unique keys as this will force the program to run in its entirety to ensure equal comparison.
 
-\section{Basic RDD vs Dataset vs Dataframe}
-Talk about the job. Basically a grouping + count + count
+\subsection{Running on Local Machine}
 
-\subsection{Resource Comparison}
+\subsubsection{Peak Execution Memory Comparison}
 Create a bar graph or line graph with 3 options to compare RDD vs dataframe vs dataset and the jobs per peakExecutionMemory
 
-\subsection{Execution Time Comparison}
+\subsubsection{Execution Time Comparison}
 Create a bar graph or line graph with 3 options to compare RDD vs dataframe vs dataset and the jobs per execution time
 
 \section{Paritions RDD vs Dataset vs Dataframe}
-Talk about the job. Basically a grouping + count + count.  Discuss where the partitions happen
+The partition jobs were basically copies of the "Basic" jobs discussed in Section \ref{basicjobs}; however, the coalesce method was used on the raw input.
+The coalesce method was used instead of the repartition method because repartition will force a shuffle.
+The coalesce method, in this case, will not force a shuffle and will instead just redistribute the old partitions to the specified number of new partitions.
+Coalesce was the chosen method because even in the smaller job running on a local machine, over 12000 partitions were going to be created.
+%TODO: Verify the following sentence.
+Furthermore, coalesce was called on the raw input because that is guaranteed to be the one part that's shared between all of the jobs in this case;
+however, Datasets and DataFrames have their own internal optimizations that may move that coalesce.
 
 \subsection{Compare Specified Partitions with True Partitions}
 The jobs look like we may have said "do x partitions", but it only create y partitions. This should be explored.
@@ -202,6 +212,7 @@ Create a line graph with 3 options to compare RDD vs dataframe vs dataset and th
 
 
 \section{Cache RDD vs Dataset vs Dataframe}
+
 Talk about the job. Basically a grouping + count + count.  Discuss where the caching happens.
 
 \subsection{Discuss Issues with Caching}
@@ -218,6 +229,8 @@ Should we explore other caching levels?
 %https://spark.apache.org/docs/2.1.0/api/scala/index.html#org.apache.spark.rdd.RDD@persist(newLevel:org.apache.spark.storage.StorageLevel):RDD.this.type
 
 There's also joins
+
+And we can discuss KMeans since those jobs were run.
 
 
 
