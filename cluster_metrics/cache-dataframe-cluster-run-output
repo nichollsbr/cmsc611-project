@@ -1,0 +1,5 @@
+appName,executorCount,executorMem,overheadMem
+CacheDataframeRunner-2018-12-17T17:14:24.1545066864Z,3,1,3072m,2048m
+CacheDataframeRunner-2018-12-17T17:32:05.1545067925Z,3,2,3072m,2048m
+CacheDataframeRunner-2018-12-17T17:46:27.1545068787Z,4,1,3072m,2048m
+CacheDataframeRunner-2018-12-17T18:02:44.1545069764Z,4,2,3072m,2048m

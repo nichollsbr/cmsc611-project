@@ -1,0 +1,9 @@
+appName,executorCount,executorMem,overheadMem
+PartitionDataframeRunner-2018-12-17T06:53:48.1545029628Z,4,1,3072m,2048m
+PartitionDataframeRunner-2018-12-17T07:08:09.1545030489Z,4,1,3072m,2048m
+PartitionDataframeRunner-2018-12-17T07:24:06.1545031446Z,4,1,3072m,2048m
+PartitionDataframeRunner-2018-12-17T07:37:54.1545032274Z,4,1,3072m,2048m
+PartitionDataframeRunner-2018-12-17T07:52:08.1545033128Z,4,2,3072m,2048m
+PartitionDataframeRunner-2018-12-17T08:06:23.1545033983Z,4,2,3072m,2048m
+PartitionDataframeRunner-2018-12-17T08:22:34.1545034954Z,4,2,3072m,2048m
+PartitionDataframeRunner-2018-12-17T08:36:47.1545035807Z,4,2,3072m,2048m

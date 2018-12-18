@@ -55,6 +55,8 @@ AWS - Charge for resources used.  Execution time and resource usage are related.
 %# Note: Use task metrics available through spark so that others can take advantage.
 %Write jobs like beginners
 
+\subsection{SparkMeasure and Spark 2.4.0}
+
 \section{Spark Discussion RDD vs Dataset vs DataFrame}
 %@Mariama
 
@@ -79,8 +81,6 @@ References:
 https://databricks.com/blog/2016/07/14/a-tale-of-three-apache-spark-apis-rdds-dataframes-and-datasets.html
 https://data-flair.training/blogs/apache-spark-rdd-vs-dataframe-vs-dataset/
 https://data-flair.training/blogs/apache-spark-dataset-tutorial/
-
-\subsection{SparkMeasure and Spark 2.4.0}
 
 \section{Data Discussion}
 Mention the data and some stats including:
@@ -194,7 +194,7 @@ Create a bar graph or line graph with 3 options to compare RDD vs dataframe vs d
 Create a bar graph or line graph with 3 options to compare RDD vs dataframe vs dataset and the jobs per execution time
 
 \section{Paritions RDD vs Dataset vs Dataframe}
-The partition jobs were basically copies of the "Basic" jobs discussed in Section \ref{basicjobs}; however, the coalesce method was used on the raw input.
+The partition jobs are basically copies of the "Basic" jobs discussed in Section \ref{basicjobs}; however, the coalesce method was used on the raw input.
 The coalesce method was used instead of the repartition method because repartition will force a shuffle.
 The coalesce method, in this case, will not force a shuffle and will instead just redistribute the old partitions to the specified number of new partitions.
 Coalesce was the chosen method because even in the smaller job running on a local machine, over 12000 partitions were going to be created.
@@ -214,7 +214,9 @@ Create a line graph with 3 options to compare RDD vs dataframe vs dataset and th
 
 
 \section{Cache RDD vs Dataset vs Dataframe}
+Again, the caching jobs
 
+%TODO: Reference KMeans jobs here
 Talk about the job. Basically a grouping + count + count.  Discuss where the caching happens.
 
 \subsection{Discuss Issues with Caching}
@@ -229,8 +231,6 @@ Create a line graph with 3 options to compare RDD vs dataframe vs dataset and th
 
 Should we explore other caching levels?
 %https://spark.apache.org/docs/2.1.0/api/scala/index.html#org.apache.spark.rdd.RDD@persist(newLevel:org.apache.spark.storage.StorageLevel):RDD.this.type
-
-There's also joins
 
 And we can discuss KMeans since those jobs were run.
 

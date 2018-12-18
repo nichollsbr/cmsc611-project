@@ -1,0 +1,5 @@
+appName,executorCount,executorMem,overheadMem
+BasicDataframeRunner-2018-12-17T03:20:14.1545016814Z,3,1,3072m,2048m
+BasicDataframeRunner-2018-12-17T03:34:40.1545017680Z,3,2,3072m,2048m
+BasicDataframeRunner-2018-12-17T03:47:08.1545018428Z,4,1,3072m,2048m
+BasicDataframeRunner-2018-12-17T04:01:52.1545019312Z,4,2,3072m,2048m
