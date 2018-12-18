@@ -56,6 +56,8 @@ AWS - Charge for resources used.  Execution time and resource usage are related.
 
 \subsection{SparkMeasure and Spark 2.4.0}
 
+Stage vs Task Stats and using task on local machine and stage on cluster for space concerns
+
 \section{Spark Discussion RDD vs Dataset vs DataFrame}
 %@Mariama
 
@@ -113,15 +115,27 @@ So, a mapPartitions method may apply the same transform to every data element wi
 Keep in mind that mapPartitions may be used for more complicated operations utilizing all of the data elements within a partition.
 
 While there are no traditional publications discussing the pros and cons of mapPartitions vs map, the general consensus on popular internet forums is that mapPartitions is generally faster because you do not have to set up a function for every element, just for the partition.
+Since this section is not directly related to the purpose of this paper, a full written analysis will not be performed; however, this section provides information that fits into the larger purpose of this paper.
 
 %TODO: Create references
 https://stackoverflow.com/questions/21185092/apache-spark-map-vs-mappartitions
 https://martin.atlassian.net/wiki/spaces/lestermartin/blog/2016/05/19/67043332/why+spark+s+mapPartitions+transformation+is+faster+than+map+calls+your+function+once+partition+not+once+element
 https://www.quora.com/What-is-the-difference-between-a-map-and-mapPartitions-in-Spark
 
-Include graphic explaining what the jobs are
-
 \subsection{Running on Local Machine}
+
+When running on a local machine, the resources that can be given to a Spark job are limited.
+Figure \ref{fig:localjobs} provides information on the resource settings for local machine runs.
+This figure will be referenced in the other sections as well.
+In order to ensure that the job would not run out of resources, a subset of the NOAA GSOD dataset was selected.
+This subset of the NOAA GSOD data was everything from 2018.
+This dataset consisted of 3443046 records totalling $\approx$ 74 megabytes.
+
+\begin{figure}
+    \includegraphics[width=\linewidth]{presentation_table.PNG}
+    \caption{List of Job Numbers and their respective resource settings for local machine runs.}
+    \label{fig:localjobs}
+\end{figure}
 
 \subsubsection{Execution Time Comparison}
 The execution time of the Spark job can be found by subtracting the minimum value of the launchTime stat from the maximum of the finishTime stat.
@@ -163,7 +177,7 @@ Since this is the case, the remaining Spark jobs working with RDDs will utilize 
 %-We may also want to look at some other memory metrics available
 
 %TODO: Decide if we want to do the following CPU Time Comparison
-\subsubsection{CPU Time Comparison}
+%\subsubsection{CPU Time Comparison}
 %\begin{figure}
 %    \includegraphics[width=\linewidth]{../python_scripts/images/mapVsMapPartitionsAllCpuTime.png}
 %    \caption{A boat.}
@@ -171,8 +185,44 @@ Since this is the case, the remaining Spark jobs working with RDDs will utilize 
 %\end{figure}
 
 \subsection{Running on Distributed Cluster}
-\subsubsection{Resource Usage Comparison}
+The cluster these Spark jobs were run on was not very large and other jobs were running at the same time.
+This is not a problem for our case since this paper is exploring the idea of resource benchmarking and once Spark was given resources, they were not taken away.
+Figure \ref{fig:clusterjobs} provides information on the resource settings for the cluster runs.
+This figure will be referenced in the other sections as well.
+These jobs ran over all of the NOAA GSOD dataset.
+This dataset consisted of 121467184 records totalling $\approx$ 2.6 gigabytes.
+
+\begin{figure}
+    \includegraphics[width=\linewidth]{cluster_run_settings.PNG}
+    \caption{List of Job Numbers and their respective resource settings for cluster runs.}
+    \label{fig:clusterjobs}
+\end{figure}
+
+Note that the jobs were not able to be run using only one or two executors due to cluster limitations.
+Similarly, the cluster did not have enough cores to support
+
 \subsubsection{Execution Time Comparison}
+
+\begin{figure}
+    \includegraphics[width=\linewidth]{../python_scripts/images/mapVsMapPartitionsAllExecutionTimeCluster.png}
+    \caption{Comparison of Map job vs MapPartitions job vs Basic RDD job runs on the cluster}
+    \label{fig:mapVMapPartitionsAllExecTimeCluster}
+\end{figure}
+
+Again, Figure \ref{fig:mapVMapPartitionsAllExecTimeCluster} exhibits how benchmarking Spark jobs based only off of execution time does not give the entire picture.
+The Basic RDD and MapPartitions job are the exact same and yet, Figure \ref{fig:mapVMapPartitionsAllExecTimeCluster} shows the run times are not consistent.
+
+
+\subsubsection{Peak Execution Memory Comparison}
+\begin{figure}
+    \includegraphics[width=\linewidth]{../python_scripts/images/mapVsMapPartitionsMaxPeakExecutionMemoryCluster.png}
+    \caption{A boat.}
+    \label{fig:mapVMapPartitionsMaxPeakExecutionMemoryCluster}
+\end{figure}
+
+By examining Figure \ref{fig:mapVMapPartitionsMaxPeakExecutionMemoryCluster}, it can be seen that in $3/4$ of the runs the mapPartitions method had a lower amount of peak execution memory.
+Also note that the peak execution memory metric for the cluster runs is significantly higher than that of the local machine runs.
+This makes sense because the size of the dataset was significantly larger.
 
 %Might be worthwhile to create another job that would call a toList on the partition iterator.
 
@@ -384,7 +434,6 @@ abbreviations in the title or heads unless they are unavoidable.
 %\label{tab1}
 %\end{center}
 %\end{table}
-\includegraphics{presentation_table}
 %Figure Labels: Use 8 point Times New Roman for Figure labels. Use words
 %rather than symbols or abbreviations when writing Figure axis labels to
 %avoid confusing the reader. As an example, write the quantity
