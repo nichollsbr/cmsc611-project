@@ -1,4 +1,4 @@
-appName,executorCount,executorMem,overheadMem
+appName,executorCount,coreCount,executorMem,overheadMem
 PartitionDatasetRunner-2018-12-17T08:53:12.1545036792Z,4,1,3072m,2048m
 PartitionDatasetRunner-2018-12-17T09:05:50.1545037550Z,4,1,3072m,2048m
 PartitionDatasetRunner-2018-12-17T09:18:32.1545038312Z,4,1,3072m,2048m

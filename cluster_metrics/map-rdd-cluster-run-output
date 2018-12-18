@@ -1,4 +1,4 @@
-appName,executorCount,executorMem,overheadMem
+appName,executorCount,coreCount,executorMem,overheadMem
 MapRDDRunner-2018-12-17T01:39:52.1545010792Z,3,1,3072m,2048m
 MapRDDRunner-2018-12-17T02:10:36.1545012636Z,3,2,3072m,2048m
 MapRDDRunner-2018-12-17T02:32:04.1545013924Z,4,1,3072m,2048m

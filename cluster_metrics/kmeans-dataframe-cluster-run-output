@@ -1,4 +1,4 @@
-appName,executorCount,executorMem,overheadMem
+appName,executorCount,coreCount,executorMem,overheadMem
 KMeansDataframeRunner-2018-12-17T14:31:06.1545057066Z,3,1,3072m,2048m
 KMeansDataframeRunner-2018-12-17T14:47:19.1545058039Z,3,2,3072m,2048m
 KMeansDataframeRunner-2018-12-17T15:01:19.1545058879Z,4,1,3072m,2048m

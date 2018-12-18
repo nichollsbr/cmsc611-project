@@ -1,4 +1,4 @@
-appName,executorCount,executorMem,overheadMem
+appName,executorCount,coreCount,executorMem,overheadMem
 CacheDatasetRunner-2018-12-17T18:14:05.1545070445Z,3,1,3072m,2048m
 CacheDatasetRunner-2018-12-17T18:27:09.1545071229Z,3,2,3072m,2048m
 CacheDatasetRunner-2018-12-17T18:40:02.1545072002Z,4,1,3072m,2048m

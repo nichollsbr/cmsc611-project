@@ -1,4 +1,4 @@
-appName,executorCount,executorMem,overheadMem,partition
+appName,executorCount,coreCount,executorMem,overheadMem,partition
 PartitionRDDRunner-2018-12-17T10:43:04.1545043384Z,4,1,3072m,2048m
 PartitionRDDRunner-2018-12-17T11:09:30.1545044970Z,4,1,3072m,2048m
 PartitionRDDRunner-2018-12-17T11:33:20.1545046400Z,4,1,3072m,2048m
