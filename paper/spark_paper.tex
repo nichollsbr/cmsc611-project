@@ -57,6 +57,7 @@ AWS - Charge for resources used.  Execution time and resource usage are related.
 \subsection{SparkMeasure and Spark 2.4.0}
 
 Stage vs Task Stats and using task on local machine and stage on cluster for space concerns
+%TODO: Mention that stage metrics peakExecutionMemory is max of task
 
 \section{Spark Discussion RDD vs Dataset vs DataFrame}
 %@Mariama
@@ -198,14 +199,14 @@ This dataset consisted of 121467184 records totalling $\approx$ 2.6 gigabytes.
     \label{fig:clusterjobs}
 \end{figure}
 
-Note that the jobs were not able to be run using only one or two executors due to cluster limitations.
-Similarly, the cluster did not have enough cores to support
+Note that the jobs were not able to be run using only one or two executors due to cluster limitations on the maximum size of a container given to executors.
+Similarly, the cluster could not support a higher number of
 
 \subsubsection{Execution Time Comparison}
 
 \begin{figure}
     \includegraphics[width=\linewidth]{../python_scripts/images/mapVsMapPartitionsAllExecutionTimeCluster.png}
-    \caption{Comparison of Map job vs MapPartitions job vs Basic RDD job runs on the cluster}
+    \caption{Comparison of the execution time of a Map job vs MapPartitions job vs Basic RDD job runs on the cluster}
     \label{fig:mapVMapPartitionsAllExecTimeCluster}
 \end{figure}
 
@@ -216,13 +217,15 @@ The Basic RDD and MapPartitions job are the exact same and yet, Figure \ref{fig:
 \subsubsection{Peak Execution Memory Comparison}
 \begin{figure}
     \includegraphics[width=\linewidth]{../python_scripts/images/mapVsMapPartitionsMaxPeakExecutionMemoryCluster.png}
-    \caption{A boat.}
+    \caption{Comparison of maximum peak execution memory of a Map job vs MapPartitions job runs on the cluster.}
     \label{fig:mapVMapPartitionsMaxPeakExecutionMemoryCluster}
 \end{figure}
 
 By examining Figure \ref{fig:mapVMapPartitionsMaxPeakExecutionMemoryCluster}, it can be seen that in $3/4$ of the runs the mapPartitions method had a lower amount of peak execution memory.
 Also note that the peak execution memory metric for the cluster runs is significantly higher than that of the local machine runs.
 This makes sense because the size of the dataset was significantly larger.
+
+Since it has been established above that the peak execution memory during a job using mapPartitions will be equal to the job using the map method on a local machine and will be lower the majority of runs in the cluster, the remaining RDD jobs are written using mapPartitions.
 
 %Might be worthwhile to create another job that would call a toList on the partition iterator.
 
@@ -238,9 +241,36 @@ The output of the program is a count of all of the unique keys as this will forc
 
 \subsubsection{Peak Execution Memory Comparison}
 Create a bar graph or line graph with 3 options to compare RDD vs dataframe vs dataset and the jobs per peakExecutionMemory
+\begin{figure}
+    \includegraphics[width=\linewidth]{../python_scripts/images/basicJobMaxPeakExecutionMemory.png}
+    \caption{Comparison of maximum peak execution memory of the basic job runs on a local machine.}
+    \label{fig:basicJobMaxPeakExecutionMemory}
+\end{figure}
 
 \subsubsection{Execution Time Comparison}
 Create a bar graph or line graph with 3 options to compare RDD vs dataframe vs dataset and the jobs per execution time
+\begin{figure}
+    \includegraphics[width=\linewidth]{../python_scripts/images/basicJobAllExecutionTime.png}
+    \caption{Comparison of execution time of the basic job runs on a local machine.}
+    \label{fig:basicJobAllExecutionTime}
+\end{figure}
+
+\subsection{Running on Distributed Cluster}
+\subsubsection{Peak Execution Memory Comparison}
+Create a bar graph or line graph with 3 options to compare RDD vs dataframe vs dataset and the jobs per peakExecutionMemory
+\begin{figure}
+    \includegraphics[width=\linewidth]{../python_scripts/images/basicJobsMaxPeakExecutionMemoryCluster.png}
+    \caption{Comparison of maximum peak execution memory of the basic job runs on a cluster.}
+    \label{fig:basicJobsMaxPeakExecutionMemoryCluster}
+\end{figure}
+
+\subsubsection{Execution Time Comparison}
+Create a bar graph or line graph with 3 options to compare RDD vs dataframe vs dataset and the jobs per execution time
+\begin{figure}
+    \includegraphics[width=\linewidth]{../python_scripts/images/basicJobsAllExecutionTimeCluster.png}
+    \caption{Comparison of execution time of the basic job runs on a cluster.}
+    \label{fig:basicJobsAllExecutionTimeCluster}
+\end{figure}
 
 \section{Paritions RDD vs Dataset vs Dataframe}
 The partition jobs are basically copies of the "Basic" jobs discussed in Section \ref{basicjobs}; however, the coalesce method was used on the raw input.
