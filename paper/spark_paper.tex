@@ -12,9 +12,7 @@
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 \begin{document}
 
-\title{Paper Title*\\
-{\footnotesize \textsuperscript{*}Note: Sub-titles are not captured in Xplore and
-should not be used}
+\title{Benchmarking Resource Usage of Underlying Datatypes of Apache Spark\\
 }
 
 \author{\IEEEauthorblockN{1\textsuperscript{st} Given Name Surname}
@@ -39,11 +37,14 @@ email address}
 \maketitle
 
 \begin{abstract}
-Write Abstract
+The purpose of this paper is examine how the different underlying datatypes of Spark jobs - Resilient Distributed Datasets (RDDs),
+Datasets, and DataFrames - affect resource usage.
+A case is made against using execution time as the primary benchmark of analytics since many external factors can affect the execution time.
+Instead, metrics readily available through Spark are used to benchmark the resource usage of these different datatypes in common applications of Spark jobs, such as counting, caching, repartitioning and K-Means.
 \end{abstract}
 
 \begin{IEEEkeywords}
-spark,benchmark,resource
+apache,spark,benchmark,analytics,big data
 \end{IEEEkeywords}
 
 \section{Introduction}
