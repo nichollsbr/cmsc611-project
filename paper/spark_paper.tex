@@ -15,21 +15,21 @@
 \title{Benchmarking Resource Usage of Underlying Datatypes of Apache Spark\\
 }
 
-\author{\IEEEauthorblockN{1\textsuperscript{st} Brittany Nichols}
+\author{\IEEEauthorblockN{Brittany Nicholls}
 \IEEEauthorblockA{\textit{CSEE} \\
-\textit{University of Maryland, Baltimore County}\\
+\textit{UMBC}\\
 Catonsville, United States \\
-email address}
+brn1@umbc.edu}
 \and
-\IEEEauthorblockN{2\textsuperscript{nd} Mariama Adangwa}
+\IEEEauthorblockN{Mariama Adangwa}
 \IEEEauthorblockA{\textit{CSEE} \\
-\textit{University of Maryland, Baltimore County}\\
+\textit{University of Maryland, Baltimore County (UMBC)}\\
 Catonsville, United States \\
 bama4@umbc.edu}
 \and
-\IEEEauthorblockN{3\textsuperscript{rd} Rachel}
+\IEEEauthorblockN{Rachel Estes}
 \IEEEauthorblockA{\textit{CSEE} \\
-\textit{University of Maryland, Baltimore County}\\
+\textit{UMBC}\\
 Catonsville, United States \\
 email address}
 }
@@ -240,40 +240,77 @@ The output of the program is a count of all of the unique keys as this will forc
 
 \subsection{Running on Local Machine}
 
+The description of the resource settings for the runs on the local machine is the same as above and can be seen in Figure \ref{fig:localjobs}.
+
+
 \subsubsection{Peak Execution Memory Comparison}
-Create a bar graph or line graph with 3 options to compare RDD vs dataframe vs dataset and the jobs per peakExecutionMemory
 \begin{figure}
     \includegraphics[width=\linewidth]{../python_scripts/images/basicJobMaxPeakExecutionMemory.png}
     \caption{Comparison of maximum peak execution memory of the basic job runs on a local machine.}
     \label{fig:basicJobMaxPeakExecutionMemory}
 \end{figure}
 
+As can be seen in Figure \ref{fig:basicJobMaxPeakExecutionMemory}, the maximum peak execution memory for the DataFrame and Dataset implementations are the same.
+This is expected since they are utilizing the same optimizations behind the scenes.
+Additionally, Figure \ref{fig:basicJobMaxPeakExecutionMemory} shows a step like behavior for the peak execution memory for these two jobs based on the thread count.
+The first four jobs are run using one thread, and thus, have a higher peak execution memory.
+Upon examination of the job using the Spark UI, it can be seen that one of the optimizations of the Dataframes and Datasets is that it will repartition the data.
+This will be discussed in further detail in Section \ref{section:partition}, but simply put, this means that more data is being put into a partition, so more memory is needed to deal with a single partition.
+So, the next four jobs are run using two threads, so more partitions are created compared to running the job with one thread.
+Thus, each partition is smaller in the two-threaded job than in the one threaded job.
+Similarly, this also explains the step caused in the next 8 jobs when three and four threads are used.
+The current working theory as to why there is not a step between the 3-threaded job and the 4-threaded job is because partitions are created based on the number of cores being used.
+The local job was run on a machine with a quad-core processor, so one of the processors may have been assigned to the driver.
+
+This RDD implementation also has a significantly lower peak execution memory, sitting at $\approx$ 4000 bytes.
+The peak execution memory is so low, comparatively, for the RDD implementation because it does not have any optimization going on behind the scenes.
+For each partition of data that the job has read in, it processes that partition individually during the count stage.
+Thus, the peak execution memory remains the same.
+
+This lead to the question of how does forcing the RDD to repartition affect the peak execution memory.
+This will be explored in the next section.
+
 \subsubsection{Execution Time Comparison}
-Create a bar graph or line graph with 3 options to compare RDD vs dataframe vs dataset and the jobs per execution time
+As we can see in above, RDDs will use a lower amount of execution memory.
 \begin{figure}
     \includegraphics[width=\linewidth]{../python_scripts/images/basicJobAllExecutionTime.png}
     \caption{Comparison of execution time of the basic job runs on a local machine.}
     \label{fig:basicJobAllExecutionTime}
 \end{figure}
 
+However, the graph in Figure \ref{fig:basicJobAllExecutionTime} shows that RDDs are also slower in the case of these jobs.
+This makes sense because the overhead of preparing an executor to work with a partition is not insignificant.
+So since the number of partitions that an RDD needs to work with is higher.
+Note that there were about 12000 partitions in the RDD during the count stage, while the DataFrame and Datasets were only working with at most 500 partitions.
+
+Interestingly enough, the gap between the run times of the RDD vs DataFrames/Datasets closed as more threads were used.
+This may indicate that at some point, having enough cores to run the job against removes the speed benefit of DataFrames and Datasets; however exploring this is out of scope.
+
 \subsection{Running on Distributed Cluster}
+Unfortunately, due to the clusters limited resources, the DataFrame and Dataset implementations of this basic count were unable to successfully complete with the configuration provided.
+This does implies that their peak execution memory would be too high since the message displayed as to why the DataFrame and Datasets jobs died were because they used all of the resources and needed more.
+
+Note that these jobs used the same resources settings as shown in Figure \ref{fig:clusterjobs}.
+
 \subsubsection{Peak Execution Memory Comparison}
-Create a bar graph or line graph with 3 options to compare RDD vs dataframe vs dataset and the jobs per peakExecutionMemory
 \begin{figure}
     \includegraphics[width=\linewidth]{../python_scripts/images/basicJobsMaxPeakExecutionMemoryCluster.png}
     \caption{Comparison of maximum peak execution memory of the basic job runs on a cluster.}
     \label{fig:basicJobsMaxPeakExecutionMemoryCluster}
 \end{figure}
 
+Figure \ref{fig:basicJobsMaxPeakExecutionMemoryCluster} shows that again, the maximum peak execution memory used is constant regardless of the number of executors or core per executor.
+This makes sense because for this job with RDDs, the same partitions are going to be processed the same way, so the peak execution memory shouldn't flux much, if at all.
+
 \subsubsection{Execution Time Comparison}
-Create a bar graph or line graph with 3 options to compare RDD vs dataframe vs dataset and the jobs per execution time
 \begin{figure}
     \includegraphics[width=\linewidth]{../python_scripts/images/basicJobsAllExecutionTimeCluster.png}
     \caption{Comparison of execution time of the basic job runs on a cluster.}
     \label{fig:basicJobsAllExecutionTimeCluster}
 \end{figure}
 
-\section{Paritions RDD vs Dataset vs Dataframe}
+\section{Paritions RDD vs Dataset vs Dataframe}\label{section:partition}
+%Why are partitions useful
 The partition jobs are basically copies of the "Basic" jobs discussed in Section \ref{basicjobs}; however, the coalesce method was used on the raw input.
 The coalesce method was used instead of the repartition method because repartition will force a shuffle.
 The coalesce method, in this case, will not force a shuffle and will instead just redistribute the old partitions to the specified number of new partitions.
@@ -516,7 +553,5 @@ faster than map (calls your function once/partition, not once/element)'',2016. [
 \bibitem{b6} K. Kumar, ``What is the difference between a map and mapPartitions in Spark?'',2017. [Online] Availiable: https://www.quora.com/What-is-the-difference-between-a-map-and-mapPartitions-in-Spark. [Accessed: 16- Dec- 2018].
 \end{thebibliography}
 \vspace{12pt}
-\color{red}
-IEEE conference templates contain guidance text for composing and formatting conference papers. Please ensure that all template text is removed from your conference paper prior to submission to the conference. Failure to remove the template text from your paper may result in your paper not being published.
 
 \end{document}
