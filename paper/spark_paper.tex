@@ -112,8 +112,6 @@ The jobs that were run on a local machine were run on a The local machine is fro
 The cluster provided was fairly small and was in use by other individuals, thus, only about 40 GB and 8 cores were available for the use of this project.
 
 \section{Map vs MapPartitions in RDD}
-%TODO: We could describe partitioning in spark in more detail
-%TODO: Rewrite sentence below
 While writing Spark jobs, it is important to implement code that is efficient.
 The Spark jobs written for the purpose of this paper are not necessarily the most efficient, especially since the definition of efficient is somewhat subjective.
 This paper explores one definition of efficiency by examining the usage of available resources.
@@ -126,7 +124,7 @@ Simply put, a partition is a chunk of data in the RDD that can be operated on al
 So, a mapPartitions method may apply the same transform to every data element within its partition, thus acting like the map method would.
 Keep in mind that mapPartitions may be used for more complicated operations utilizing all of the data elements within a partition.
 
-While there are no traditional publications discussing the pros and cons of mapPartitions vs map, the general consensus on popular internet forums is that mapPartitions is generally faster because you do not have to set up a function for every element, just for the partition.
+While there are no traditional publications discussing the pros and cons of mapPartitions vs map, the general consensus on popular internet forums is that mapPartitions is generally faster because you do not have to set up a function for every element, just for the partition. \cite{b4,b5,b6}
 Since this section is not directly related to the purpose of this paper, a full written analysis will not be performed; however, this section provides information that fits into the larger purpose of this paper.
 
 \subsection{Running on Local Machine}
@@ -136,7 +134,7 @@ Figure \ref{fig:localjobs} provides information on the resource settings for loc
 This figure will be referenced in the other sections as well.
 In order to ensure that the job would not run out of resources, a subset of the NOAA GSOD dataset was selected.
 This subset of the NOAA GSOD data was everything from 2018.
-This dataset consisted of 3443046 records totalling $\approx$ 74 megabytes.
+This dataset consisted of 3,443,046 records totalling $\approx$ 74 megabytes.
 
 \begin{figure}
     \includegraphics[width=\linewidth]{presentation_table.PNG}
@@ -171,25 +169,11 @@ This transitions to the next question analyzed of whether there is an advantage 
 \subsubsection{Peak Execution Memory Comparison}
 \begin{figure}
     \includegraphics[width=\linewidth]{../python_scripts/images/mapVsMapPartitionsMaxPeakExecutionMemory.png}
-    \caption{A boat.}
+    \caption{Comparison of maximum peak execution memory of a Map job vs MapPartitions job runs on a local machine.}
     \label{fig:mapVMapPartitionsMaxPeakExecutionMemory}
 \end{figure}
 
-%TODO: Should probably explain why max peak execution memory is the stat we focus on.
-%TODO: Maybe dig deeper into this stat.  Why is it the same for all jobs.
 Figure \ref{fig:mapVMapPartitionsMaxPeakExecutionMemory} shows that the peak execution memory is the same for both map and mapPartitions.
-Since this is the case, the remaining Spark jobs working with RDDs will utilize mapPartitions instead of map.
-
-%TODO: The comparison of the peakExecutionMemory vs BytesWritten for this job was interesting. Can use as space filler.
-%-We may also want to look at some other memory metrics available
-
-%TODO: Decide if we want to do the following CPU Time Comparison
-%\subsubsection{CPU Time Comparison}
-%\begin{figure}
-%    \includegraphics[width=\linewidth]{../python_scripts/images/mapVsMapPartitionsAllCpuTime.png}
-%    \caption{A boat.}
-%    \label{fig:boat1}
-%\end{figure}
 
 \subsection{Running on Distributed Cluster}
 The cluster these Spark jobs were run on was not very large and other jobs were running at the same time.
@@ -197,7 +181,7 @@ This is not a problem for our case since this paper is exploring the idea of res
 Figure \ref{fig:clusterjobs} provides information on the resource settings for the cluster runs.
 This figure will be referenced in the other sections as well.
 These jobs ran over all of the NOAA GSOD dataset.
-This dataset consisted of 121467184 records totalling $\approx$ 2.6 gigabytes.
+This dataset consisted of 121,467,184 records totalling $\approx$ 2.6 gigabytes.
 
 \begin{figure}
     \includegraphics[width=\linewidth]{cluster_run_settings.PNG}
@@ -231,7 +215,7 @@ By examining Figure \ref{fig:mapVMapPartitionsMaxPeakExecutionMemoryCluster}, it
 Also note that the peak execution memory metric for the cluster runs is significantly higher than that of the local machine runs.
 This makes sense because the size of the dataset was significantly larger.
 
-Since it has been established above that the peak execution memory during a job using mapPartitions will be equal to the job using the map method on a local machine and will be lower the majority of runs in the cluster, the remaining RDD jobs are written using mapPartitions.
+Since it has been established above that the peak execution memory during a job using mapPartitions will be equal to the job using the map method on a local machine and will be lower for the majority of runs in the cluster, the remaining RDD jobs are written using mapPartitions.
 
 %Might be worthwhile to create another job that would call a toList on the partition iterator.
 
@@ -240,7 +224,7 @@ The equivalent of the Hello World program for any big data analytics platform, i
 The basic premise of the Word Count program is to count all of the unique words in a document.
 The NOAA GSOD data does not easily support a Word Count program, so instead, a similar program was created to start the analysis of the peak execution memory for RDDs, DataFrames and Datasets.
 In this job, a key was created by combining the station number and the nearest multiple of 10 of the average temperature that does not go over the average temperate (Ex 98 $\rightarrow$ 90).
-Each unique key is the counted.
+Each unique key is then counted.
 The output of the program is a count of all of the unique keys as this will force the program to run in its entirety to ensure equal comparison.
 
 \subsection{Running on Local Machine}
@@ -272,11 +256,11 @@ The peak execution memory is so low, comparatively, for the RDD implementation b
 For each partition of data that the job has read in, it processes that partition individually during the count stage.
 Thus, the peak execution memory remains the same.
 
-This lead to the question of how does forcing the RDD to repartition affect the peak execution memory.
+This leads to the question of how does forcing the RDD to repartition affect the peak execution memory.
 This will be explored in the next section.
 
 \subsubsection{Execution Time Comparison}
-As we can see in above, RDDs will use a lower amount of execution memory.
+As we can see above, RDDs will use a lower amount of execution memory.
 \begin{figure}
     \includegraphics[width=\linewidth]{../python_scripts/images/basicJobAllExecutionTime.png}
     \caption{Comparison of execution time of the basic job runs on a local machine.}
@@ -322,9 +306,6 @@ The partition jobs are basically copies of the "Basic" jobs discussed in Section
 The coalesce method was used instead of the repartition method because repartition will force a shuffle.
 The coalesce method did not force a shuffle and will instead just redistribute the old partitions to the specified number of new partitions.
 Coalesce was the chosen method because even in the smaller job running on a local machine, over 12000 partitions were going to be created, so reducing the number of partitions should not require a shuffle to redistribute the data.
-%TODO: Verify the following sentence.
-Furthermore, coalesce was called on the raw input because that is guaranteed to be the one part that's shared between all of the jobs in this case;
-however, Datasets and DataFrames have their own internal optimizations that may move that coalesce.
 
 \subsection{Running on Local Machine}
 \begin{figure}
@@ -413,7 +394,7 @@ Yet again, Figure \ref{fig:cacheJobMaxPeakExecutionMemory} exhibits the fact tha
 This graph does match that in Figure \ref{fig:basicJobMaxPeakExecutionMemory}, which makes sense because they are basically the same job.
 This does imply that the peak execution memory is heavily affected by the partition size and not so much the data being stored in memory.
 
-\subsection{Execution Time Comparison}
+\subsubsection{Execution Time Comparison}
 \begin{figure}
     \includegraphics[width=\linewidth]{../python_scripts/images/cacheJobAllExecutionTime.png}
     \caption{Comparison of execution time of the partition job runs on a local machine.}
@@ -440,7 +421,7 @@ The run settings for the KMeans jobs are the same as those in Figure \ref{fig:lo
 The maximum peak execution memory for the Dataset and DataFrame kmeans jobs is constant.
 This behavior is similar to that shown in Figure \ref{fig:basicJobMaxPeakExecutionMemory}, which is not surprising since KMeans is basically going to iterate over all of the partitions while calculating the cluster centers, which is what the BasicRDD job does.
 
-\subsection{Execution Time Comparison}
+\subsubsection{Execution Time Comparison}
 \begin{figure}
     \includegraphics[width=\linewidth]{../python_scripts/images/kmeansJobAllExecutionTime.png}
     \caption{Comparison of execution time of the kmeans job runs on a local machine.}
@@ -451,7 +432,27 @@ The execution time for the KMeans jobs are provided in Figure \ref{fig:kmeansJob
 There is nothing outstanding in this figure beyond seeing that there are unexplained anomalies in the execution time for the KMeansDataset job.
 
 \section{Conclusion}
+Through the exploration of the peak execution memory and execution time metrics of the 5 types of jobs above, this paper has determined the following:
+\begin{itemize}
+    \item RDDs consistently have a lower peak execution memory than DataFrames and Datasets.  Thus, they are more stable and frequently jobs implemented using RDDs would complete when the same job would not complete if it was implemented using DataFrames or Datasets.
+    \item The peak execution memory is most heavily affected by the size of partitions.
+    \item Jobs with more data have a higher peak execution memory than the exact same job run over less data.
+    \item Jobs with fewer partitions have a higher peak execution memory
+    \item The peak execution memory does not seem to be affected by the numbers of threads, executors or cores.
+    \item The execution time is not guaranteed to be reproducible.  The same job run twice can have different run times.
+    \item The execution time is most affected by the number of cores, executors and threads.
+    \item Adding more memory resources to a job that can finish with less will not change the peak execution memory.  This action also does not significantly reduce run time.
+\end{itemize}
+Ultimately, while Databricks \cite{b1} and Apache Spark \cite{b9} push DataFrames and Datasets as being optimized, this optimization tended to need more resources.
+These optimized jobs tended to finish more quickly than jobs using RDDs; however, RDDs used less resources at a time and thus would successfully complete the job much more often.
 
+Additionally, this all supports the point that resource usage is an important benchmark to include when comparing frameworks for big data analytics.
+While execution time is important, clearly conveying how a job affects and is effected by the resources available is a critical component when comparing analytic jobs.
+
+\section{Work Break Down}
+\subsection{Brittany} Wrote and executed the Spark Jobs.  Assisted with analysis of the graphics.
+\subsection{Mariama} Created the graphs and assisted with analysis of the graphics.
+\subsection{Rachel} Contributed to paper.
 
 \begin{thebibliography}{00}
 \bibitem{b1} J. Damji, ``A Tale of Three Apache Spark APIs: RDDs vs DataFrames and Datasets
