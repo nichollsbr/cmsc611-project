@@ -280,7 +280,7 @@ As we can see in above, RDDs will use a lower amount of execution memory.
 
 However, the graph in Figure \ref{fig:basicJobAllExecutionTime} shows that RDDs are also slower in the case of these jobs.
 This makes sense because the overhead of preparing an executor to work with a partition is not insignificant.
-So since the number of partitions that an RDD needs to work with is higher.
+So since the number of partitions that an RDD needs to work with is higher, it will take longer due this overhead.
 Note that there were about 12000 partitions in the RDD during the count stage, while the DataFrame and Datasets were only working with at most 500 partitions.
 
 Interestingly enough, the gap between the run times of the RDD vs DataFrames/Datasets closed as more threads were used.
@@ -309,25 +309,61 @@ This makes sense because for this job with RDDs, the same partitions are going t
     \label{fig:basicJobsAllExecutionTimeCluster}
 \end{figure}
 
+Figure \ref{fig:basicJobsAllExecutionTimeCluster} shows that the in both the 3 and 4 executor cases, having double the cores per executor significantly speeds up the execution time.
+
 \section{Paritions RDD vs Dataset vs Dataframe}\label{section:partition}
 %Why are partitions useful
 The partition jobs are basically copies of the "Basic" jobs discussed in Section \ref{basicjobs}; however, the coalesce method was used on the raw input.
 The coalesce method was used instead of the repartition method because repartition will force a shuffle.
-The coalesce method, in this case, will not force a shuffle and will instead just redistribute the old partitions to the specified number of new partitions.
-Coalesce was the chosen method because even in the smaller job running on a local machine, over 12000 partitions were going to be created.
+The coalesce method did not force a shuffle and will instead just redistribute the old partitions to the specified number of new partitions.
+Coalesce was the chosen method because even in the smaller job running on a local machine, over 12000 partitions were going to be created, so reducing the number of partitions should not require a shuffle to redistribute the data.
 %TODO: Verify the following sentence.
 Furthermore, coalesce was called on the raw input because that is guaranteed to be the one part that's shared between all of the jobs in this case;
 however, Datasets and DataFrames have their own internal optimizations that may move that coalesce.
 
-\subsection{Compare Specified Partitions with True Partitions}
-The jobs look like we may have said "do x partitions", but it only create y partitions. This should be explored.
-Can we create a graphic for this?
+\subsection{Running on Local Machine}
+\begin{figure}
+    \includegraphics[width=\linewidth]{images/partition_local_job.png}
+    \caption{List of Job Numbers and their respective resource settings for local runs of partition jobs.}
+    \label{fig:partition_local_job}
+\end{figure}
 
-\subsection{Resource Comparison for different partitions}
-Create a line graph with 3 options to compare RDD vs dataframe vs dataset and the jobs per peakExecutionMemory
+\subsubsection{Resource Comparison for different partitions}
+\begin{figure}
+    \includegraphics[width=\linewidth]{../python_scripts/images/partitionJobMaxPeakExecutionMemory.png}
+    \caption{Comparison of execution time of the partition job runs on a local machine.}
+    \label{fig:partitionJobMaxPeakExecutionMemory}
+\end{figure}
 
-\subsection{Execution Time Comparison}
-Create a line graph with 3 options to compare RDD vs dataframe vs dataset and the jobs per peakExecutionMemory for execution time
+Like the previous job examples, we can see that again in all cases the RDD will have a lower peak execution memory, even when the partitions are the same.
+Figure \ref{fig:partitionJobMaxPeakExecutionMemory} makes some of the PartitionRDD jobs look like they did not run and have a peak execution memory of 0.
+The RDD jobs did run and the max peak execution memory for the PartitionRDD has a min of $\approx$ 16000 bytes.
+
+Figure \ref{fig:partitionJobMaxPeakExecutionMemory} also shows that for every underlying datatype, the number of partitions has a large effect of the peak execution memory.
+For all of them, the highest peak execution memory occurred when the data was coalesced to one partition, which makes sense because then all of the data is being worked with at once.
+Interestingly, the difference in peak execution memory when using 100 vs 500 vs 1000 partitions was almost negligible.
+This would indicate that there is not much benefit in using many more than 100 partitions for these jobs in terms of trying to lower the peak execution memory.
+
+\subsubsection{Execution Time Comparison}
+\begin{figure}
+    \includegraphics[width=\linewidth]{../python_scripts/images/partitionJobAllExecutionTime.png}
+    \caption{Comparison of execution time of the partition job runs on a local machine.}
+    \label{fig:partitionJobAllExecutionTime}
+\end{figure}
+
+Like the previous execution time graphs, Figure \ref{fig:partitionJobAllExecutionTime} shows why execution time is a bad benchmark.
+For example, most of the Dataset and DataFrame backed jobs have very similar run times; however, there is the random spike in run time at job 3.
+
+\subsection{Running on Distributed Cluster}
+
+\subsubsection{Resource Comparison for different partitions}
+\begin{figure}
+    \includegraphics[width=\linewidth]{../python_scripts/images/partitionJobsMaxPeakExecutionMemoryCluster.png}
+    \caption{Comparison of execution time of the partition job runs on a local machine.}
+    \label{fig:partitionJobsMaxPeakExecutionMemoryCluster}
+\end{figure}
+
+\subsubsection{Execution Time Comparison}
 
 
 \section{Cache RDD vs Dataset vs Dataframe}
