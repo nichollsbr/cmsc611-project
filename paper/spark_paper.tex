@@ -63,44 +63,28 @@ Stage vs Task Stats and using task on local machine and stage on cluster for spa
 \section{Spark Discussion RDD vs Dataset vs DataFrame}
 %@Mariama
 
-
 There are several differences between the three data formats that were used in this project.
 Resilient Distributed Dataset (RDD) data is an immutable representation of distributed data.
 RDD is best for unstructured data such as text and byte streams.
 Datasets in the simplest terms are extensions of the Spark dataframe, and provide an object oriented interface.
 DataFrames organize data into columns, and provide a domain-specific API to manipulate distributed data.
-Data can be queried from both DataFrames and RDD through Spark SQL.
+Data can be queried from both DataFrames and RDD through Spark SQL.\cite{b1}
 
 Regarding the reported performance of the three data formats from other sources,
 RDD offer a data format solution that is less expensive than the other data formats.
 This is, however, at the sacrifice of data performance. For a more efficient data format, DataFrames and dataset provide
-a means of attaining greater optimization.
+a means of attaining greater optimization.\cite{b3}
 As specified in later sections, mapping and map partitions are optimizations that can be manually added to RDD
 for efficiency.
 Datasets in particular provides optimized queries through the Catalyst Query Optimizer (execution agnostic framework).
 The above performance notes will be apparent in the visualizations and analysis of the graphs in the pages that follow.
 
-References:
-https://databricks.com/blog/2016/07/14/a-tale-of-three-apache-spark-apis-rdds-dataframes-and-datasets.html
-https://data-flair.training/blogs/apache-spark-rdd-vs-dataframe-vs-dataset/
-https://data-flair.training/blogs/apache-spark-dataset-tutorial/
-
 \section{Data Discussion}
 The data set used is the Global Surface Summary of the Day (GSOD) which contains data such as mean temperature, dew point, sea level pressure, mean wind speed, etc.
-Each data file thoroughly covers approximately a 24-hours period.
+Each data file thoroughly covers approximately a 24-hours period.\cite{b7}
 Cleanup was necessary because the data was not in an easily readable format such as CSV or JSON. Having the raw data and transforming this dats to CSV format ensured fair results for each of the 3 main dataformats used in the project, and enabled us to use built-in CSV parsing functionality.
 Further data processing involves removing the headers for the data, as the headers were mostly incomplete.
-The dataset in total is 26GB large. The mere size of the data posed as a challenge on some of the machines that were used in the initial testing.
-
-Mention the data and some stats including:
-Size in bytes of the input data for local testing (can get this from metrics)
-Number of records of the input data for local testing
-
-Mention data preparation + CSV transformation
-
-If we do the cluster, there'll be more data, so we'll want to discuss those stats as well.
-
-Cleanup to fairly enable dataframe
+The dataset in total is 2.6GB large with 121,467,184 records. The mere size of the data posed as a challenge on some of the machines that were used in the initial testing.
 
 
 \section{Setup}
@@ -124,11 +108,6 @@ Keep in mind that mapPartitions may be used for more complicated operations util
 
 While there are no traditional publications discussing the pros and cons of mapPartitions vs map, the general consensus on popular internet forums is that mapPartitions is generally faster because you do not have to set up a function for every element, just for the partition.
 Since this section is not directly related to the purpose of this paper, a full written analysis will not be performed; however, this section provides information that fits into the larger purpose of this paper.
-
-%TODO: Create references
-https://stackoverflow.com/questions/21185092/apache-spark-map-vs-mappartitions
-https://martin.atlassian.net/wiki/spaces/lestermartin/blog/2016/05/19/67043332/why+spark+s+mapPartitions+transformation+is+faster+than+map+calls+your+function+once+partition+not+once+element
-https://www.quora.com/What-is-the-difference-between-a-map-and-mapPartitions-in-Spark
 
 \subsection{Running on Local Machine}
 
@@ -597,6 +576,8 @@ faster than map (calls your function once/partition, not once/element)'',2016. [
 /19/67043332/why+spark++mapPartitions+transformation+is+faster+than
 +map+calls+your+function+once+partition+not+once+element [Accessed: 16- Dec- 2018].
 \bibitem{b6} K. Kumar, ``What is the difference between a map and mapPartitions in Spark?'',2017. [Online] Availiable: https://www.quora.com/What-is-the-difference-between-a-map-and-mapPartitions-in-Spark. [Accessed: 16- Dec- 2018].
+\bibitem{b6} Kaggle, NOAA, ``NOAA Global Surface Summary of the Day'', 2018. [Online] Avaliable: 
+https://www.kaggle.com/noaa/noaa-global-surface-summary-of-the-day/home. [Accessed: 19- Dec- 2018].
 \end{thebibliography}
 \vspace{12pt}
 
