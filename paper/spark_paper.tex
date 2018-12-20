@@ -41,7 +41,7 @@ The purpose of this paper is examine how resource usage of an analytic is affect
 Resilient Distributed Datasets (RDDs), Datasets, and DataFrames.
 The resource usage of an analytic is explored as a viable, and preferred, alternative of benchmarking big data analytics instead of the current common benchmarking performed using execution time.
 The run time of an analytic is shown to not be guaranteed to be reproducible since many external factors to the job can affect the execution time.
-Instead, metrics readily available through Spark are used to benchmark the resource usage of these different datatypes in common applications of Spark jobs, such as counting, caching, repartitioning and K-Means.
+Instead, metrics readily available through Spark are used to benchmark the resource usage of these different datatypes in common applications of Spark jobs, such as counting, caching, repartitioning and KMeans.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -49,40 +49,48 @@ apache,spark,benchmark,analytics,big data
 \end{IEEEkeywords}
 
 \section{Introduction}
-Sparks claims that it can run workloads 100$\%$ faster.
-Apache Spark achieves high performance for both batch and streaming data, using a state-of-the-art DAG scheduler, a query optimizer, and a physical execution engine.
-However, Spark is mostly in memory.
-They also do not do analysis on the resource usage, which is important when people are paying for time and resources on tools, like AWS.
+Apache Spark is a common analytics engine used in processing big data.
+It claims that a Spark job can run 100$\%$ faster than a similar Hadoop MapReduce job. \cite{b9}
+While this is an impressive metric, it is a bit misleading because it fails to capture the fact that Spark jobs mostly operate in main memory whereas Hadoop MapReduce jobs do not.
+It is common knowledge that accessing data in main memory is much faster than trying to move data from a hard drive to main memory, so it seems natural that a tool that utilizes main memory much more heavily would be faster than a tool that does not.
+This leads to questions such as: How much memory does a Spark analytic need to do the same thing as a Hadoop MapReduce analytic?
+Is purchasing servers with a lot of memory worth the benefits of a lower execution time?
+These types of questions are becoming more important since common cluster tools, such as AWS, are charging people for the resources they use, including memory.
 
-%AWS - Charge for resources used.  Execution time and resource usage are related.  Same with CPU Time.
+Thus, in this paper we are going to analyze the resource usage of different Spark jobs.
+The primary focus will be on how the underlying datatypes - Resilient Distributed Datasets (RDDs), Datasets and DataFrames - affect resource usage.
+Common applications of Spark analytics, such as counting, caching, partitioning, and KMeans, will be implemented using each of these datatypes and then will be run with different resource settings to see how the resource usage is affected.
+Since the current common benchmark of Spark analytics is execution time, this metric will also be analyzed to point out the downsides of using execution time as a benchmark for big data analytics.
 
-Databricks is a big company that supports Sparks.
-They start to delve into the importance of resource usage, indicating this is an important benchmark.
-Though no one has benchmarked Spark jobs by resource usage. We want to determine the parameters suitable for efficient data analysis based on memory available.
-We will also explore the memory usage of the underlying data structures of Spark: datasets, dataframes, and RDDS.
-We will also examine how changing the analytic code and runtime parameters affect the resource usage, and explaining why benchmarking according to resources used is valuable.
-We will work towards building a script to automate analysis of the resource usage of a Spark analytic in order to handle problems big data analytic writers face in their daily tasks, and write more efficient Spark jobs by taking into account the resource usage in addition to execution time.
+Databricks, a company that supports the development of Spark and Spark related applications, is aware of the importance of resource usage.
+In an article analyzing the pros and cons of the different underlying datatypes of Spark analytics, they do bring up the fact that when a DataFrame is cached, it takes up significantly less memory than an RDD. \cite{b1}
+However, this is as far as they go in their analysis of Spark jobs from the perspective of resource usage.
 
-%# Note: Use task metrics available through spark so that others can take advantage.
-%Write jobs like beginners
+This paper will take the analysis of resource usage by Spark jobs further by implementing multiple analytics and examining the peak execution memory metric, discussed further in the next section.
+Each of these jobs will be written as simply as possible to mimic the work a new Spark analytic developer would produce.
 
 \subsection{SparkMeasure and Spark 2.4.0}
+The code written to accompany this paper was written for Spark 2.1.0, which is an older version of Spark.
+A library, written by an engineer at CERN named Luca Canali, will grab performance and resource metrics from the tasks run in a Spark job.
+This library is called SparkMeasure. \cite{b8}
+Since many Spark jobs have thousands, if not hundreds of thousands, of tasks SparkMeasure will also aggregate these metrics per Stage in order to create reasonably sized output files.
+In the jobs below, task metrics were captured for the jobs run on a local machine, while stage metrics were captured for the cluster run jobs.
 
-Stage vs Task Stats and using task on local machine and stage on cluster for space concerns
-%TODO: Mention that stage metrics peakExecutionMemory is max of task
+The metric this paper will be focusing on is the peak execution memory since that is the most indicative of the resource usage of the Spark job.
+
+Note that these metrics are not easily accessible in Spark 2.1.0; however, they were introduced in Spark 2.4.0 which was released November 2, 2018. \cite{b9}
 
 \section{Spark Discussion RDD vs Dataset vs DataFrame}
-%@Mariama
 
 There are several differences between the three data formats that were used in this project.
 Resilient Distributed Dataset (RDD) data is an immutable representation of distributed data.
-RDD is best for unstructured data such as text and byte streams.
+RDDs are best for unstructured data such as text and byte streams.
 Datasets in the simplest terms are extensions of the Spark dataframe, and provide an object oriented interface.
 DataFrames organize data into columns, and provide a domain-specific API to manipulate distributed data.
 Data can be queried from both DataFrames and RDD through Spark SQL.\cite{b1}
 
 Regarding the reported performance of the three data formats from other sources,
-RDD offer a data format solution that is less expensive than the other data formats.
+RDDs offer a data format solution that is less expensive than the other data formats.
 This is, however, at the sacrifice of data performance. For a more efficient data format, DataFrames and dataset provide
 a means of attaining greater optimization.\cite{b3}
 As specified in later sections, mapping and map partitions are optimizations that can be manually added to RDD
@@ -93,14 +101,15 @@ The above performance notes will be apparent in the visualizations and analysis 
 \section{Data Discussion}
 The data set used is the Global Surface Summary of the Day (GSOD) which contains data such as mean temperature, dew point, sea level pressure, mean wind speed, etc.
 Each data file thoroughly covers approximately a 24-hours period.\cite{b7}
-Cleanup was necessary because the data was not in an easily readable format such as CSV or JSON. Having the raw data and transforming this dats to CSV format ensured fair results for each of the 3 main dataformats used in the project, and enabled us to use built-in CSV parsing functionality.
+Cleanup was necessary because the data was not in an easily readable format such as CSV or JSON. Having the raw data and transforming this data to CSV format ensured fair results for each of the 3 main data formats used in the project, and enabled us to use built-in CSV parsing functionality.
 Further data processing involves removing the headers for the data, as the headers were mostly incomplete.
-The dataset in total is 2.6GB large with 121,467,184 records. The mere size of the data posed as a challenge on some of the machines that were used in the initial testing.
+The dataset in total is 2.6GB large with 121,467,184 records.
+The mere size of the data posed as a challenge on some of the machines that were used in the initial testing.
 
 
 \section{Setup}
-%TODO: Get Specs
-The local machine is from running on a Mac.
+The jobs that were run on a local machine were run on a The local machine is from running on a MacBook Pro with a 2.2 GHz Intel Core i7 processor and 16 GB of 1600 MHz DDR3 memory.
+The cluster provided was fairly small and was in use by other individuals, thus, only about 40 GB and 8 cores were available for the use of this project.
 
 \section{Map vs MapPartitions in RDD}
 %TODO: We could describe partitioning in spark in more detail
@@ -458,7 +467,7 @@ faster than map (calls your function once/partition, not once/element)'',2016. [
 \bibitem{b7} Kaggle, NOAA, ``NOAA Global Surface Summary of the Day'', 2018. [Online] Avaliable: 
 https://www.kaggle.com/noaa/noaa-global-surface-summary-of-the-day/home. [Accessed: 19- Dec- 2018].
 \bibitem{b8} L. Canali, ``SparkMeasure'', 2018. [Online] Avaliable: https://github.com/LucaCanali/sparkMeasure. [Accessed: 4- Nov- 2018].
-
+\bibitem{b9} Apache Software Foundation, ``Apache Spark: Lightning-fast unified analytics engine'', 2018. [Online] Available: https://spark.apache.org/. [Accessed 19- Dec- 2018]
 \end{thebibliography}
 \vspace{12pt}
 
