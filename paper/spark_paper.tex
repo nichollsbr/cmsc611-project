@@ -12,34 +12,35 @@
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 \begin{document}
 
-\title{Benchmarking Resource Usage of Underlying Datatypes of Apache Spark\\
+\title{Spark Analysis: Benchmarking Resource Usage to Compare RDDs, Dataframes and Datasets\\
 }
 
 \author{\IEEEauthorblockN{Brittany Nicholls}
 \IEEEauthorblockA{\textit{CSEE} \\
-\textit{University of Maryland, Baltimore County (UMBC)}\\
+\textit{University of Maryland,Baltimore County}\\
 Catonsville, United States \\
 brn1@umbc.edu}
 \and
 \IEEEauthorblockN{Mariama Adangwa}
 \IEEEauthorblockA{\textit{CSEE} \\
-\textit{University of Maryland, Baltimore County (UMBC)}\\
+\textit{University of Maryland,Baltimore County}\\
 Catonsville, United States \\
 bama4@umbc.edu}
 \and
 \IEEEauthorblockN{Rachel Estes}
 \IEEEauthorblockA{\textit{CSEE} \\
-\textit{University of Maryland, Baltimore County (UMBC)}\\
+\textit{University of Maryland,Baltimore County}\\
 Catonsville, United States \\
-email address}
+jd28691@umbc.edu}
 }
 
 \maketitle
 
 \begin{abstract}
-The purpose of this paper is examine how the different underlying datatypes of Spark jobs - Resilient Distributed Datasets (RDDs),
-Datasets, and DataFrames - affect resource usage.
-A case is made against using execution time as the primary benchmark of analytics since many external factors can affect the execution time.
+The purpose of this paper is examine how resource usage of an analytic is affected by the different underlying datatypes of Spark analytics -
+Resilient Distributed Datasets (RDDs), Datasets, and DataFrames.
+The resource usage of an analytic is explored as a viable, and preferred, alternative of benchmarking big data analytics instead of the current common benchmarking performed using execution time.
+The run time of an analytic is shown to not be guaranteed to be reproducible since many external factors to the job can affect the execution time.
 Instead, metrics readily available through Spark are used to benchmark the resource usage of these different datatypes in common applications of Spark jobs, such as counting, caching, repartitioning and K-Means.
 \end{abstract}
 
@@ -48,11 +49,19 @@ apache,spark,benchmark,analytics,big data
 \end{IEEEkeywords}
 
 \section{Introduction}
-Sparks claims that it can run workloads 100$\%$ faster. Apache Spark achieves high performance for both batch and streaming data, using a state-of-the-art DAG scheduler, a query optimizer, and a physical execution engine. However, Spark is mostly in memory. They also do not do analysis on the resource usage, which is important when people are paying for time and resources on tools, like AWS.
+Sparks claims that it can run workloads 100$\%$ faster.
+Apache Spark achieves high performance for both batch and streaming data, using a state-of-the-art DAG scheduler, a query optimizer, and a physical execution engine.
+However, Spark is mostly in memory.
+They also do not do analysis on the resource usage, which is important when people are paying for time and resources on tools, like AWS.
 
 %AWS - Charge for resources used.  Execution time and resource usage are related.  Same with CPU Time.
 
-Databricks is a big company that supports Sparks. They start to delve into the importance of resource usage, indicating this is an important benchmark. Though no one has benchmarked Spark jobs by resource usage. We want to determine the parameters suitable for efficient data analysis based on memory available. We will also explore the memory usage of the underlying data structures of Spark: datasets, dataframes, and RDDS. We will also examine how changing the analytic code and runtime parameters affect the resource usage, and explaining why benchmarking according to resources used is valuable. We will work towards building a script to automate analysis of the resource usage of a Spark analytic in order to handle problems big data analytic writers face in their daily tasks, and write more efficient Spark jobs by taking into account the resource usage in addition to execution time.
+Databricks is a big company that supports Sparks.
+They start to delve into the importance of resource usage, indicating this is an important benchmark.
+Though no one has benchmarked Spark jobs by resource usage. We want to determine the parameters suitable for efficient data analysis based on memory available.
+We will also explore the memory usage of the underlying data structures of Spark: datasets, dataframes, and RDDS.
+We will also examine how changing the analytic code and runtime parameters affect the resource usage, and explaining why benchmarking according to resources used is valuable.
+We will work towards building a script to automate analysis of the resource usage of a Spark analytic in order to handle problems big data analytic writers face in their daily tasks, and write more efficient Spark jobs by taking into account the resource usage in addition to execution time.
 
 %# Note: Use task metrics available through spark so that others can take advantage.
 %Write jobs like beginners
