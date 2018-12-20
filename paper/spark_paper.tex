@@ -48,9 +48,11 @@ apache,spark,benchmark,analytics,big data
 \end{IEEEkeywords}
 
 \section{Introduction}
-Write Intro
+Sparks claims that it can run workloads 100$\%$ faster. Apache Spark achieves high performance for both batch and streaming data, using a state-of-the-art DAG scheduler, a query optimizer, and a physical execution engine. However, Spark is mostly in memory. They also do not do analysis on the resource usage, which is important when people are paying for time and resources on tools, like AWS.
 
-AWS - Charge for resources used.  Execution time and resource usage are related.  Same with CPU Time
+%AWS - Charge for resources used.  Execution time and resource usage are related.  Same with CPU Time.
+
+Databricks is a big company that supports Sparks. They start to delve into the importance of resource usage, indicating this is an important benchmark. Though no one has benchmarked Spark jobs by resource usage. We want to determine the parameters suitable for efficient data analysis based on memory available. We will also explore the memory usage of the underlying data structures of Spark: datasets, dataframes, and RDDS. We will also examine how changing the analytic code and runtime parameters affect the resource usage, and explaining why benchmarking according to resources used is valuable. We will work towards building a script to automate analysis of the resource usage of a Spark analytic in order to handle problems big data analytic writers face in their daily tasks, and write more efficient Spark jobs by taking into account the resource usage in addition to execution time.
 
 %# Note: Use task metrics available through spark so that others can take advantage.
 %Write jobs like beginners
@@ -431,17 +433,6 @@ The execution time for the KMeans jobs are provided in Figure \ref{fig:kmeansJob
 There is nothing outstanding in this figure beyond seeing that there are unexplained anomalies in the execution time for the KMeansDataset job.
 
 \section{Conclusion}
-
-
-
-
-
-
-\subsection{NOAA Dataset}\label{NOAA}
-The data set used is the Global Surface Summary of the Day (GSOD) which contains data such as mean temperature, dew point, sea level pressure, mean wind speed, etc.
-Each data file thoroughly covers approximately a 24-hours period.
-Cleanup was necessary because the data was not in an easily readable format such as CSV or JSON. Having the data as a raw comparison a bit more “fair” since we could now use built-in CSV parsing functionality.
-Headers for the data were not complete,therefore they were removed. In order to use the data for analysis, the data was transformed into CSV.
 
 
 \begin{thebibliography}{00}
