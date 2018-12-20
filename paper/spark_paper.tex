@@ -86,6 +86,12 @@ https://data-flair.training/blogs/apache-spark-rdd-vs-dataframe-vs-dataset/
 https://data-flair.training/blogs/apache-spark-dataset-tutorial/
 
 \section{Data Discussion}
+The data set used is the Global Surface Summary of the Day (GSOD) which contains data such as mean temperature, dew point, sea level pressure, mean wind speed, etc.
+Each data file thoroughly covers approximately a 24-hours period.
+Cleanup was necessary because the data was not in an easily readable format such as CSV or JSON. Having the raw data and transforming this dats to CSV format ensured fair results for each of the 3 main dataformats used in the project, and enabled us to use built-in CSV parsing functionality.
+Further data processing involves removing the headers for the data, as the headers were mostly incomplete.
+The dataset in total is 26GB large. The mere size of the data posed as a challenge on some of the machines that were used in the initial testing.
+
 Mention the data and some stats including:
 Size in bytes of the input data for local testing (can get this from metrics)
 Number of records of the input data for local testing
@@ -394,7 +400,11 @@ And we can discuss KMeans since those jobs were run.
 
 
 
-
+\subsection{NOAA Dataset}\label{NOAA}
+The data set used is the Global Surface Summary of the Day (GSOD) which contains data such as mean temperature, dew point, sea level pressure, mean wind speed, etc.
+Each data file thoroughly covers approximately a 24-hours period.
+Cleanup was necessary because the data was not in an easily readable format such as CSV or JSON. Having the data as a raw comparison a bit more “fair” since we could now use built-in CSV parsing functionality.
+Headers for the data were not complete,therefore they were removed. In order to use the data for analysis, the data was transformed into CSV.
 
 
 
