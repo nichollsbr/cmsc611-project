@@ -376,26 +376,61 @@ Additionally, it is important to note that the difference in the peak execution 
 Since the PartitionDataset and PartitionDataFrame jobs did not complete, this section will not be analyzed since no comparison can be made.
 
 \section{Cache RDD vs Dataset vs Dataframe}
-The caching jobs are similar
+The caching jobs are similar to the basic jobs discussed in Section \ref{basicjobs}; however, the data is cached after it is read but before there is any manipulation of the data.
+This reflects common use cases of caching the raw data before manipulating it multiple ways.
 
-%TODO: Reference KMeans jobs here
-Talk about the job. Basically a grouping + count + count.  Discuss where the caching happens.
+There were issues running all of the caching jobs on the cluster since every single job ran out of resources.
+Thus, only the case where the jobs were run on a local machine will be analyzed.
 
-\subsection{Discuss Issues with Caching}
-It looks like data had to spill to disk during the caching. We need to discuss this and other metrics that could be used
-to explain this behavior.
+\subsubsection{Resource Comparison for different partitions}
+\begin{figure}
+    \includegraphics[width=\linewidth]{../python_scripts/images/cacheJobMaxPeakExecutionMemory.png}
+    \caption{Comparison of maximum peak execution memory of the caching job runs on a local machine.}
+    \label{fig:cacheJobMaxPeakExecutionMemory}
+\end{figure}
 
-\subsection{Resource Comparison for different partitions}
-Create a line graph with 3 options to compare RDD vs dataframe vs dataset and the jobs per peakExecutionMemory.  Need to explore other metrics
+Yet again, Figure \ref{fig:cacheJobMaxPeakExecutionMemory} exhibits the fact that RDDs have a lower peak execution memory than DataFrames or Datasets.
+This graph does match that in Figure \ref{fig:basicJobMaxPeakExecutionMemory}, which makes sense because they are basically the same job.
+This does imply that the peak execution memory is heavily affected by the partition size and not so much the data being stored in memory.
 
 \subsection{Execution Time Comparison}
-Create a line graph with 3 options to compare RDD vs dataframe vs dataset and the jobs per peakExecutionMemory for execution time. Need to explore other metrics
+\begin{figure}
+    \includegraphics[width=\linewidth]{../python_scripts/images/cacheJobAllExecutionTime.png}
+    \caption{Comparison of execution time of the partition job runs on a local machine.}
+    \label{fig:cacheJobAllExecutionTime}
+\end{figure}
 
-Should we explore other caching levels?
-%https://spark.apache.org/docs/2.1.0/api/scala/index.html#org.apache.spark.rdd.RDD@persist(newLevel:org.apache.spark.storage.StorageLevel):RDD.this.type
+Figure \ref{fig:cacheJobAllExecutionTime} again exemplifies how the execution time is not guaranteed to be a reproducible metric, which means it is not an ideal benchmark.
 
-And we can discuss KMeans since those jobs were run.
+\section{KMeans RDD vs Dataset vs Dataframe}
+KMeans is a popular machine learning algorithm and Apache Spark has a built-it implementation of it for RDDs, Datasets and DataFrames.
+Surprisingly, this single job caused the RDD implementation to exceed it's assigned resources while the Dataset and DataFrame versions were able to finish.
+This is likely due to the fact that the RDD implementation is from Spark version 1.* whereas the Dataset and DataFrame implementations are being updated.
+Additionally, all of the KMeans jobs failed to run on the cluster due to running out of resources.
 
+The run settings for the KMeans jobs are the same as those in Figure \ref{fig:localjobs}.
+
+\subsubsection{Resource Comparison for different partitions}
+\begin{figure}
+    \includegraphics[width=\linewidth]{../python_scripts/images/kmeansJobMaxPeakExecutionMemory.png}
+    \caption{Comparison of maximum peak execution memory of the kmeans job runs on a local machine.}
+    \label{fig:kmeansJobMaxPeakExecutionMemory}
+\end{figure}
+
+The maximum peak execution memory for the Dataset and DataFrame kmeans jobs is constant.
+This behavior is similar to that shown in Figure \ref{fig:basicJobMaxPeakExecutionMemory}, which is not surprising since KMeans is basically going to iterate over all of the partitions while calculating the cluster centers, which is what the BasicRDD job does.
+
+\subsection{Execution Time Comparison}
+\begin{figure}
+    \includegraphics[width=\linewidth]{../python_scripts/images/kmeansJobAllExecutionTime.png}
+    \caption{Comparison of execution time of the kmeans job runs on a local machine.}
+    \label{fig:kmeansJobAllExecutionTime}
+\end{figure}
+
+The execution time for the KMeans jobs are provided in Figure \ref{fig:kmeansJobAllExecutionTime}.
+There is nothing outstanding in this figure beyond seeing that there are unexplained anomalies in the execution time for the KMeansDataset job.
+
+\section{Conclusion}
 
 
 
